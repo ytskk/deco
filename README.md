@@ -9,7 +9,7 @@ Let's talk about the features you can see in the app for now. In the process of 
 #### Select preferred tags
 By default you can read popular articles and the newest ones at once (the output may be a little weird, you may give out articles in different order, not update articles for a long time, but that's all because of the API's peculiarities). Right on the home page you can add the tags you are interested in and read the current articles.
 
-| ![Tags selection page](https://user-images.githubusercontent.com/57366771/202149517-8af70699-96cb-43bd-837c-1d57cc972452.png) |   |
+| ![Tags selection page](https://user-images.githubusercontent.com/57366771/202149517-8af70699-96cb-43bd-837c-1d57cc972452.png) | ![Simulator Screen Shot - iPhone 14 - 2022-11-16 at 13 16 40](https://user-images.githubusercontent.com/57366771/202153763-d25e6743-007a-4f97-803e-b20ee079440a.png)  |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
 For now tag can be selected in Preferences -> Tags
