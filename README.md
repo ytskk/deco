@@ -1,7 +1,5 @@
-Hello, my name is Andrey, I’m practicing Flutter developer. For a while I have been working on the useful project, in my opinion, and thrilled to share with you. 
 
-### Motivation 
-I began to think what more complicated I can do. I got to know the Dev community a while ago and found it very interesting and promising. What a surprise it was that it didn't have a mobile app, not even a community app. Somehow that's how I came up with the idea of creating an open source Dev app. I'm looking forward to any suggestions, whether it's development help, design, or new features.
+# DECO - Unofficial DEV Community App
 
 ### Quick overview 
 Let's talk about the features you can see in the app for now. In the process of development there were a lot of ideas that I really hope to implement. Some, of course, are limited by the capabilities of the API.  I'll make a roadmap a bit later.

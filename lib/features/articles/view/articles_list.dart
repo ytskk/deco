@@ -53,7 +53,7 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
               );
             },
             itemBuilder: (BuildContext context, int index) {
-              return ArticleCardAlternative(
+              return NewsArticle(
                 article: state.articles.elementAt(index),
                 onPressed: () {
                   final article = state.articles.elementAt(index);
