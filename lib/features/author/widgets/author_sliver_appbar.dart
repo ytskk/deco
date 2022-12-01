@@ -39,7 +39,7 @@ class AuthorSliverAppbar extends StatelessWidget {
                 children: [
                   Text(
                     author.name.trim(),
-                    style: theme.textTheme.titleLarge,
+                    style: theme.textTheme.displayMedium!.medium,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -53,6 +53,7 @@ class AuthorSliverAppbar extends StatelessWidget {
                     ),
                 ],
               ),
+              const SizedBox(height: 4),
               GestureDetector(
                 onLongPress: () {
                   Clipboard.setData(ClipboardData(text: author.username));
@@ -65,7 +66,7 @@ class AuthorSliverAppbar extends StatelessWidget {
                 },
                 child: Text(
                   '@${author.username.trim()}',
-                  style: theme.textTheme.labelMedium!.medium.secondary,
+                  style: theme.textTheme.labelLarge!.semibold.secondary,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

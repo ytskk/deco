@@ -61,14 +61,12 @@ class AuthorInfo extends StatelessWidget {
                 IconLabel(
                   icon: Icons.location_on_outlined,
                   label: author.location!,
-                  style: theme.textTheme.labelSmall,
-                  spacing: 2,
+                  style: theme.textTheme.labelMedium,
                 ),
               IconLabel(
                 icon: Icons.calendar_month_rounded,
                 label: '${AppStrings.authorInfoJoined} ${author.joinedAt}',
-                style: theme.textTheme.labelSmall,
-                spacing: 2,
+                style: theme.textTheme.labelMedium,
               ),
             ],
           ),

@@ -1,8 +1,8 @@
 import 'dart:developer';
 
+import 'package:data_store/data_store.dart';
 import 'package:dev_community/constants/constants.dart';
-import 'package:dev_community/features/articles/articles.dart';
-import 'package:dev_community/features/author/repository/repository.dart';
+import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,6 +38,9 @@ class AuthorArticlesList extends StatelessWidget {
               isOrganization,
             );
           },
+          bookmarkBuilder: (_, articleId) {
+            return BookmarkButton(articleId: articleId);
+          },
         );
       },
     );
@@ -68,11 +71,7 @@ class AuthorArticlesList extends StatelessWidget {
 
       // // push articles. Set isLoading to false and hasReachedMax to true if
       // // new articles.length is less than 30 (default articles per page).
-      ref
-          .read(
-        authorArticlesLoadModelProvider(authorName).state,
-      )
-          .update(
+      ref.read(authorArticlesLoadModelProvider(authorName).notifier).update(
         (state) {
           final newArticles =
               page == 1 ? articles : [...state.articles, ...articles];
@@ -93,13 +92,14 @@ class AuthorArticlesList extends StatelessWidget {
 
 class _AuthorArticlesList extends StatelessWidget {
   const _AuthorArticlesList({
-    super.key,
     required this.articlesModel,
     required this.onFetchData,
+    this.bookmarkBuilder,
   });
 
   final ArticlesLoadModel articlesModel;
   final VoidCallback onFetchData;
+  final BookmarkBuilder? bookmarkBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -120,14 +120,18 @@ class _AuthorArticlesList extends StatelessWidget {
               )
           : null,
       itemBuilder: (context, index) {
+        final article = articlesModel.articles.elementAt(index);
         return ArticleCard(
-          article: articlesModel.articles.elementAt(index),
+          article: ArticleConverter.articleQuickInfoToArticleCardModel(
+            article,
+          ),
           onPressed: () {
             final article = articlesModel.articles.elementAt(index);
             context.pushNamedArticleByPath(
               article.path,
             );
           },
+          bookmarkBuilder: bookmarkBuilder,
         );
       },
     );

@@ -11,6 +11,9 @@ extension TextWidths on TextStyle {
   /// Returns the text style with 700 font weight.
   TextStyle get bold => copyWith(fontWeight: FontWeight.w700);
 
+  /// Returns the text style with 900 font weight.
+  TextStyle get heavy => copyWith(fontWeight: FontWeight.w900);
+
   /// Returns the text style with 0.6 color opacity.
   TextStyle get secondary => copyWith(color: color?.withOpacity(0.6));
 

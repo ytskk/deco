@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dev_community/constants/app_icons.dart';
 import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/shared.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,47 +11,45 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-final articleInfoProvider = FutureProvider.autoDispose
-    .family<ArticleDetailsModel, String>((ref, slug) async {
-  final repository = ref.read(articlesRepositoryProvider);
-  log('articleInfoProvider: $slug');
+final articleDetailsControllerProvider = StateNotifierProvider.autoDispose
+    .family<ArticleDetailsController, ArticleDetailsState, String>(
+  (ref, path) {
+    final repository = ref.read(articlesRepositoryProvider);
+    final dataStore = ref.read(articlesDaoProvider);
 
-  return repository.getArticleDetails(slug: slug);
-});
-
-// TODO(me): add table of contents to article.
-final tableOfContentsProvider =
-    StateProvider.autoDispose.family<ArticleDetailsTableOfContentMap, String>(
-  (ref, slug) {
-    return const ArticleDetailsTableOfContentMap();
+    return ArticleDetailsController(
+      articlesRepository: repository,
+      articlesDataStore: dataStore,
+      articlePath: path,
+    );
   },
 );
+
+// TODO(me): add table of contents to article.
 
 class ArticleDetailsPage extends StatelessWidget {
   const ArticleDetailsPage({
     super.key,
-    required this.articleSlug,
+    required this.articlePath,
   });
 
-  final String articleSlug;
+  final String articlePath;
 
   @override
   Widget build(BuildContext context) {
-    log('passing to provider slug: $articleSlug');
+    log('passing to provider path: $articlePath');
     return Consumer(
       builder: (context, ref, child) {
         return Scaffold(
           appBar: AppBar(
-            iconTheme: IconThemeData(
-              size: 20,
-            ),
+            iconTheme: const IconThemeData(size: 20),
             toolbarHeight: 32,
             surfaceTintColor: Theme.of(context).colorScheme.background,
             actions: [
               IconButton(
                 onPressed: () {
                   launchUrlString(
-                    'https://dev.to/$articleSlug',
+                    'https://dev.to$articlePath',
                     mode: LaunchMode.externalApplication,
                   );
                 },
@@ -65,21 +64,21 @@ class ArticleDetailsPage extends StatelessWidget {
           // TODO(me): create a bottom navigation.
           body: Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final articleInfo = ref.watch(articleInfoProvider(articleSlug));
+              final articleDetails =
+                  ref.watch(articleDetailsControllerProvider(articlePath));
 
-              return articleInfo.when(
-                data: (data) {
-                  return _ArticleDetailsView(
-                    articleDetails: data,
-                    articleSlug: articleSlug,
-                  );
-                },
-                error: (Object error, StackTrace stackTrace) {
-                  return Text('Error: $error');
+              return articleDetails.when(
+                data: (articleDetails) {
+                  return _ArticleDetailsView(articleDetails: articleDetails);
                 },
                 loading: () {
                   return const Center(
                     child: CircularProgressIndicator.adaptive(),
+                  );
+                },
+                error: (error) {
+                  return Center(
+                    child: Text(error.toString()),
                   );
                 },
               );
@@ -94,11 +93,9 @@ class ArticleDetailsPage extends StatelessWidget {
 class _ArticleDetailsView extends StatefulWidget {
   const _ArticleDetailsView({
     required this.articleDetails,
-    required this.articleSlug,
   });
 
   final ArticleDetailsModel articleDetails;
-  final String articleSlug;
 
   @override
   State<_ArticleDetailsView> createState() => _ArticleDetailsViewState();
@@ -143,12 +140,11 @@ class _ArticleDetailsViewState extends State<_ArticleDetailsView> {
             relativeDate:
                 StringUtils.relativeDate(widget.articleDetails.createdAt),
           ),
-          const SizedBox(height: 32),
           ArticleBody(
-            slug: widget.articleSlug,
+            articleDetails: widget.articleDetails,
             scrollController: _articleDetailsScrollController,
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
           ArticleAuthors(
             author: widget.articleDetails.user,
             organization: widget.articleDetails.organization,

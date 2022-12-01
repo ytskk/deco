@@ -11,8 +11,8 @@ final favouriteArticleProvider = StreamProvider.family.autoDispose(
   },
 );
 
-class BookmarkBuilder extends StatelessWidget {
-  const BookmarkBuilder({
+class BookmarkButton extends StatelessWidget {
+  const BookmarkButton({
     super.key,
     required this.articleId,
   });
@@ -29,6 +29,9 @@ class BookmarkBuilder extends StatelessWidget {
 
         return favouriteArticle.when(
           data: (isFavourite) {
+            final iconColor =
+                Theme.of(context).textTheme.labelLarge!.secondary.color;
+
             return GestureDetector(
               onTap: () async {
                 if (isFavourite) {
@@ -37,11 +40,10 @@ class BookmarkBuilder extends StatelessWidget {
                   final articlesProvider = ref.read(articlesRepositoryProvider);
                   // log('saving article with slug: ${article.path}');
                   final articleDetails = await articlesProvider
-                      .getArticleDetails(slug: article.path);
+                      .getArticleDetailsById(id: articleId);
 
                   await ref.read(articlesDaoProvider).saveArticle(
-                        ArticleDetailsToArticleWithAuthorConverter
-                            .toArticleWithAuthor(
+                        ArticleConverter.toArticleWithAuthor(
                           articleDetails,
                         ),
                       );
@@ -51,6 +53,7 @@ class BookmarkBuilder extends StatelessWidget {
                 isFavourite
                     ? Icons.bookmark_rounded
                     : Icons.bookmark_border_rounded,
+                color: iconColor,
               ),
             );
           },

@@ -19,8 +19,10 @@ class AppStyle {
     switch (appStyleType) {
       case AppStyleType.devto:
         return const AppStyleDevTo();
+      case AppStyleType.deco:
+        return const AppStyleDeco();
       default:
-        return const AppStyle(appStyleType: AppStyleType.standard);
+        return const AppStyle(appStyleType: AppStyleType.deco);
     }
   }
 

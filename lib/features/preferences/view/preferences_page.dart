@@ -29,6 +29,15 @@ class PreferencesPage extends StatelessWidget {
               children: [
                 TableGroupRow(
                   title: const Text(
+                    AppStrings.preferencesAppStyleTitle,
+                  ),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () {
+                    context.pushNamed(PathNames.preferencesAppStyle);
+                  },
+                ),
+                TableGroupRow(
+                  title: const Text(
                     AppStrings.preferencesDevelopmentComponentsTitle,
                   ),
                   trailing: const Icon(Icons.chevron_right_rounded),
@@ -43,6 +52,13 @@ class PreferencesPage extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: () {
                     context.pushNamed(PathNames.tagsSelect);
+                  },
+                ),
+                TableGroupRow(
+                  title: const Text('Bookmarks'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () {
+                    context.pushNamed(PathNames.bookmarks);
                   },
                 ),
               ],

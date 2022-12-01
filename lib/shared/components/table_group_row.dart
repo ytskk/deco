@@ -20,7 +20,7 @@ class TableGroupRow extends StatelessWidget {
   Widget? _buildTitleChild(Widget? title, ThemeData theme) {
     if (title != null) {
       return DefaultTextStyle(
-        style: theme.textTheme.bodyLarge!,
+        style: theme.textTheme.bodyMedium!,
         child: title,
       );
     }

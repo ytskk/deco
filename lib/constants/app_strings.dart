@@ -34,7 +34,7 @@ abstract class AppStrings {
   static const String articleDetailsAppBarTitle = 'Article Details';
   static const String articleDetailsInfoAuthorTitle = 'Author';
   static const String articleDetailsInfoAuthorsTitle = 'Authors';
-  static const String articleDetailsInfoReadingTime = 'min to read';
+  static const String articleDetailsInfoReadingTime = 'min read';
   static const String articleDetailsCopy = 'Copy';
 
   // author info

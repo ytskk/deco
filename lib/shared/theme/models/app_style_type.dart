@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 
 enum AppStyleType {
-  @JsonValue('standard')
-  standard('Platform default'),
+  @JsonValue('deco')
+  deco('DECO style'),
   @JsonValue('devto')
   devto('dev.to'),
   @JsonValue('reddish')

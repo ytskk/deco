@@ -10,5 +10,7 @@ abstract class PathNames {
   static const String articles = '/articles';
   static const String username = 'username';
   static const String teamMembers = 'team-members';
-  static const String articleBySlug = 'slug';
+  static const String articleByPath = 'path';
+  static const String articleById = 'id';
+  static const String bookmarks = '/bookmarks';
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dev_community/features/articles/articles.dart';
+import 'package:dev_community/features/bookmarks/widgets/bookmark_button.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,6 +45,7 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
             isLoading: state.isLoading,
             itemCount: state.articles.length,
             hasReachedMax: state.hasReachedMax,
+            hasError: state.hasError,
             onFetchData: () async {
               await _loadPage(state.page + 1);
             },
@@ -52,15 +54,25 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
                 child: CircularProgressIndicator.adaptive(),
               );
             },
+
+            /// TODO: beautify
+            errorBuilder: (context) => Center(
+              child: Text('error'),
+            ),
             itemBuilder: (BuildContext context, int index) {
-              return NewsArticle(
-                article: state.articles.elementAt(index),
+              return ArticleCard(
+                article: ArticleConverter.articleQuickInfoToArticleCardModel(
+                  state.articles.elementAt(index),
+                ),
                 onPressed: () {
                   final article = state.articles.elementAt(index);
                   context.pushNamedArticleByPath(
                     article.path,
                     extra: state.articles.elementAt(index),
                   );
+                },
+                bookmarkBuilder: (_, articleId) {
+                  return BookmarkButton(articleId: articleId);
                 },
               );
             },
@@ -99,7 +111,10 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
         },
       );
     } catch (error) {
-      log('error: $error');
+      ref.read(articleListStateProvider(widget.type).state).update(
+            (state) => state.copyWith(hasError: true),
+          );
+      // log('error: $error');
     }
   }
 }

@@ -20,7 +20,9 @@ mixin _$ArticlesLoadModel {
   int get page => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get hasReachedMax => throw _privateConstructorUsedError;
-  List<ArticleCardModel> get articles => throw _privateConstructorUsedError;
+  bool get hasError => throw _privateConstructorUsedError;
+  List<ArticleQuickInfoModel> get articles =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ArticlesLoadModelCopyWith<ArticlesLoadModel> get copyWith =>
@@ -38,7 +40,8 @@ abstract class $ArticlesLoadModelCopyWith<$Res> {
       int page,
       bool isLoading,
       bool hasReachedMax,
-      List<ArticleCardModel> articles});
+      bool hasError,
+      List<ArticleQuickInfoModel> articles});
 }
 
 /// @nodoc
@@ -58,6 +61,7 @@ class _$ArticlesLoadModelCopyWithImpl<$Res, $Val extends ArticlesLoadModel>
     Object? page = null,
     Object? isLoading = null,
     Object? hasReachedMax = null,
+    Object? hasError = null,
     Object? articles = null,
   }) {
     return _then(_value.copyWith(
@@ -77,10 +81,14 @@ class _$ArticlesLoadModelCopyWithImpl<$Res, $Val extends ArticlesLoadModel>
           ? _value.hasReachedMax
           : hasReachedMax // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasError: null == hasError
+          ? _value.hasError
+          : hasError // ignore: cast_nullable_to_non_nullable
+              as bool,
       articles: null == articles
           ? _value.articles
           : articles // ignore: cast_nullable_to_non_nullable
-              as List<ArticleCardModel>,
+              as List<ArticleQuickInfoModel>,
     ) as $Val);
   }
 }
@@ -98,7 +106,8 @@ abstract class _$$_ArticlesLoadModelCopyWith<$Res>
       int page,
       bool isLoading,
       bool hasReachedMax,
-      List<ArticleCardModel> articles});
+      bool hasError,
+      List<ArticleQuickInfoModel> articles});
 }
 
 /// @nodoc
@@ -116,6 +125,7 @@ class __$$_ArticlesLoadModelCopyWithImpl<$Res>
     Object? page = null,
     Object? isLoading = null,
     Object? hasReachedMax = null,
+    Object? hasError = null,
     Object? articles = null,
   }) {
     return _then(_$_ArticlesLoadModel(
@@ -135,10 +145,14 @@ class __$$_ArticlesLoadModelCopyWithImpl<$Res>
           ? _value.hasReachedMax
           : hasReachedMax // ignore: cast_nullable_to_non_nullable
               as bool,
+      hasError: null == hasError
+          ? _value.hasError
+          : hasError // ignore: cast_nullable_to_non_nullable
+              as bool,
       articles: null == articles
           ? _value._articles
           : articles // ignore: cast_nullable_to_non_nullable
-              as List<ArticleCardModel>,
+              as List<ArticleQuickInfoModel>,
     ));
   }
 }
@@ -151,7 +165,8 @@ class _$_ArticlesLoadModel implements _ArticlesLoadModel {
       this.page = 0,
       this.isLoading = false,
       this.hasReachedMax = false,
-      final List<ArticleCardModel> articles = const []})
+      this.hasError = false,
+      final List<ArticleQuickInfoModel> articles = const []})
       : _articles = articles;
 
   @override
@@ -165,17 +180,20 @@ class _$_ArticlesLoadModel implements _ArticlesLoadModel {
   @override
   @JsonKey()
   final bool hasReachedMax;
-  final List<ArticleCardModel> _articles;
   @override
   @JsonKey()
-  List<ArticleCardModel> get articles {
+  final bool hasError;
+  final List<ArticleQuickInfoModel> _articles;
+  @override
+  @JsonKey()
+  List<ArticleQuickInfoModel> get articles {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_articles);
   }
 
   @override
   String toString() {
-    return 'ArticlesLoadModel(type: $type, page: $page, isLoading: $isLoading, hasReachedMax: $hasReachedMax, articles: $articles)';
+    return 'ArticlesLoadModel(type: $type, page: $page, isLoading: $isLoading, hasReachedMax: $hasReachedMax, hasError: $hasError, articles: $articles)';
   }
 
   @override
@@ -189,12 +207,14 @@ class _$_ArticlesLoadModel implements _ArticlesLoadModel {
                 other.isLoading == isLoading) &&
             (identical(other.hasReachedMax, hasReachedMax) ||
                 other.hasReachedMax == hasReachedMax) &&
+            (identical(other.hasError, hasError) ||
+                other.hasError == hasError) &&
             const DeepCollectionEquality().equals(other._articles, _articles));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, type, page, isLoading,
-      hasReachedMax, const DeepCollectionEquality().hash(_articles));
+      hasReachedMax, hasError, const DeepCollectionEquality().hash(_articles));
 
   @JsonKey(ignore: true)
   @override
@@ -210,7 +230,8 @@ abstract class _ArticlesLoadModel implements ArticlesLoadModel {
       final int page,
       final bool isLoading,
       final bool hasReachedMax,
-      final List<ArticleCardModel> articles}) = _$_ArticlesLoadModel;
+      final bool hasError,
+      final List<ArticleQuickInfoModel> articles}) = _$_ArticlesLoadModel;
 
   @override
   String get type;
@@ -221,7 +242,9 @@ abstract class _ArticlesLoadModel implements ArticlesLoadModel {
   @override
   bool get hasReachedMax;
   @override
-  List<ArticleCardModel> get articles;
+  bool get hasError;
+  @override
+  List<ArticleQuickInfoModel> get articles;
   @override
   @JsonKey(ignore: true)
   _$$_ArticlesLoadModelCopyWith<_$_ArticlesLoadModel> get copyWith =>

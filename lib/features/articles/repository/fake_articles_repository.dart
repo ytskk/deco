@@ -4,7 +4,7 @@ import 'package:dev_community/features/features.dart';
 
 class FakeArticlesRepository implements ArticlesRepositoryInterface {
   @override
-  Future<List<ArticleCardModel>> getArticles({
+  Future<List<ArticleQuickInfoModel>> getArticles({
     int page = 1,
     String? type,
   }) async {
@@ -113,12 +113,12 @@ class FakeArticlesRepository implements ArticlesRepositoryInterface {
       },
     ];
 
-    final fakeArticles = res.map(ArticleCardModel.fromJson).toList();
+    final fakeArticles = res.map(ArticleQuickInfoModel.fromJson).toList();
 
     return fakeArticles;
   }
 
-  static List<ArticleCardModel> mockArticles({int count = 1}) {
+  static List<ArticleQuickInfoModel> mockArticles({int count = 1}) {
     final articlesCount = count.clamp(0, 5);
 
     final articles = [
@@ -226,21 +226,29 @@ class FakeArticlesRepository implements ArticlesRepositoryInterface {
       },
     ];
 
-    final articleCardModelList =
-        articles.take(articlesCount).map(ArticleCardModel.fromJson).toList();
+    final articleCardModelList = articles
+        .take(articlesCount)
+        .map(ArticleQuickInfoModel.fromJson)
+        .toList();
 
     return articleCardModelList;
   }
 
   @override
-  Future<ArticleDetailsModel> getArticleDetails({required String slug}) {
+  Future<ArticleDetailsModel> getArticleDetails({required String path}) {
     // TODO: implement getArticleDetails
     throw UnimplementedError();
   }
 
   @override
-  Future<ArticleCardModel> getArticleCard({required String slug}) {
+  Future<ArticleQuickInfoModel> getArticleCard({required String slug}) {
     // TODO: implement getArticleCard
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ArticleDetailsModel> getArticleDetailsById({required int id}) {
+    // TODO: implement getArticleDetailsById
     throw UnimplementedError();
   }
 }

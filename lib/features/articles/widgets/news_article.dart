@@ -12,7 +12,7 @@ class NewsArticle extends StatelessWidget {
     this.showCoverImage = true,
   });
 
-  final ArticleCardModel article;
+  final ArticleQuickInfoModel article;
   final VoidCallback? onPressed;
   final bool showCoverImage;
 
@@ -20,59 +20,61 @@ class NewsArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return GestureDetector(
-      onTap: onPressed,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context).dividerColor,
-            ),
-            // bottom: BorderSide(
-            //   color: Theme.of(context).dividerColor,
-            // ),
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (article.coverImage != null ||
-                  (article.tags != null && article.tags!.isNotEmpty)) ...[
-                _TopContent(
-                  image: showCoverImage ? article.coverImage : null,
-                  tags: article.tags,
-                ),
-                const SizedBox(height: 4),
-              ],
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      article.title,
-                      style: theme.textTheme.bodyLarge!.medium,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      StringUtils.joinBy(
-                        [
-                          StringUtils.prepareAuthors(
-                            userName: article.user.name,
-                            organizationName: article.organization?.name,
-                          ),
-                          StringUtils.formatDate(article.createdAt),
-                        ],
-                        separator: ' // ',
-                      ),
-                      style: theme.textTheme.bodyMedium!.secondary,
-                    ),
-                  ],
-                ),
+    return Dismissible(
+      key: ValueKey(article.id),
+      background: Text('background'),
+      secondaryBackground: Text('secondaryBackground'),
+      child: GestureDetector(
+        onTap: onPressed,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Theme.of(context).dividerColor,
               ),
-            ],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (article.coverImage != null ||
+                    (article.tags != null && article.tags!.isNotEmpty)) ...[
+                  _TopContent(
+                    image: showCoverImage ? article.coverImage : null,
+                    tags: article.tags,
+                  ),
+                  const SizedBox(height: 4),
+                ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        article.title,
+                        style: theme.textTheme.bodyLarge!.medium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        StringUtils.joinBy(
+                          [
+                            StringUtils.prepareAuthors(
+                              userName: article.user.name,
+                              organizationName: article.organization?.name,
+                            ),
+                            StringUtils.formatDate(article.createdAt),
+                          ],
+                          separator: ' // ',
+                        ),
+                        style: theme.textTheme.bodyMedium!.secondary,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
