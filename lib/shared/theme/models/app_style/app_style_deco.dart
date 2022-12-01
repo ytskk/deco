@@ -90,9 +90,9 @@ class AppStyleDeco extends AppStyle {
     final textTheme = _textTheme(colorScheme);
 
     return TabBarTheme(
-      labelStyle: textTheme.labelLarge!.semibold,
+      labelStyle: textTheme.labelLarge!.medium,
       labelColor: textTheme.labelLarge!.color,
-      unselectedLabelStyle: textTheme.labelLarge!.semibold,
+      unselectedLabelStyle: textTheme.labelLarge!.medium,
       unselectedLabelColor: textTheme.labelLarge!.color?.withOpacity(0.42),
       splashFactory: NoSplash.splashFactory,
       overlayColor: const MaterialStatePropertyAll(Colors.transparent),
@@ -102,7 +102,7 @@ class AppStyleDeco extends AppStyle {
       indicator: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: textTheme.bodyMedium!.color!.withOpacity(0.72),
+            color: textTheme.labelLarge!.color!.withOpacity(0.72),
             width: 0.85,
           ),
         ),
@@ -113,7 +113,7 @@ class AppStyleDeco extends AppStyle {
   @override
   AppStyle get light {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: Colors.indigo.shade600,
+      seedColor: const Color(0xFF526ED3),
       background: const Color(0xFFFFFFFF),
       // get application for that color.
       surface: const Color(0xFFFFFFFF),
@@ -131,6 +131,7 @@ class AppStyleDeco extends AppStyle {
     return copyWith(
       colorScheme: colorScheme,
       textTheme: _textTheme(colorScheme),
+      chipTheme: _chipThemeData(colorScheme),
       cardTheme: _cardTheme(colorScheme),
       tabBarTheme: _tabBarTheme(colorScheme),
       dividerTheme: _dividerTheme(colorScheme),
@@ -146,19 +147,39 @@ class AppStyleDeco extends AppStyle {
 
   @override
   AppStyle get dark {
-    final colorScheme = ColorScheme.dark();
+    const colorScheme = ColorScheme.dark(
+      primary: Color(0xFF5F7EEC),
+      background: Color(0xFF121217),
+      primaryContainer: Color(0xFF1F1F24),
+      outline: Color(0xFF343434),
+    );
 
     return copyWith(
       colorScheme: colorScheme,
       textTheme: _textTheme(colorScheme),
-      // cardTheme: _cardTheme,
       chipTheme: _chipThemeData(colorScheme),
-      // dividerTheme: _dividerTheme,
+      cardTheme: _cardTheme(colorScheme),
+      tabBarTheme: _tabBarTheme(colorScheme),
+      dividerTheme: _dividerTheme(colorScheme),
     );
   }
 
   @override
   AppStyle get dim {
-    return dark.copyWith();
+    const colorScheme = ColorScheme.dark(
+      primary: Color(0xFF5F7EEC),
+      background: Color(0xFF000000),
+      primaryContainer: Color(0xFF121217),
+      outline: Color(0xFF28282C),
+    );
+
+    return dark.copyWith(
+      colorScheme: colorScheme,
+      textTheme: _textTheme(colorScheme),
+      chipTheme: _chipThemeData(colorScheme),
+      cardTheme: _cardTheme(colorScheme),
+      tabBarTheme: _tabBarTheme(colorScheme),
+      dividerTheme: _dividerTheme(colorScheme),
+    );
   }
 }

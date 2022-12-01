@@ -3,7 +3,11 @@ import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-typedef BookmarkBuilder = Widget Function(BuildContext context, int articleId);
+typedef BookmarkBuilder = Widget Function(
+  BuildContext context,
+  int articleId,
+  String articlePath,
+);
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({
@@ -63,7 +67,9 @@ class _ArticleCardBody extends StatelessWidget {
                 ),
                 Text(
                   article.title,
-                  style: theme.textTheme.bodyMedium!.semibold,
+                  style: article.isRead
+                      ? theme.textTheme.bodyMedium!.semibold.secondary
+                      : theme.textTheme.bodyMedium!.semibold,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -109,8 +115,8 @@ class _ArticleCardCoverImage extends StatelessWidget {
         imageUrl: imageUrl,
         cacheKey: imageUrl,
         fit: BoxFit.cover,
-        // width: 80,
-        height: 60,
+        width: 80,
+        height: 80,
         errorWidget: (context, url, error) => const Icon(Icons.error),
         progressIndicatorBuilder: (context, url, downloadProgress) => Center(
           child: AnimatedOpacity(
@@ -154,20 +160,22 @@ class _ArticleCardBottom extends StatelessWidget {
             style: textStyle!.medium.secondary,
           ),
           const Spacer(),
-          Row(
-            children: [
-              if (bookmarkBuilder != null) ...[
-                bookmarkBuilder!(context, article.id),
-                const SizedBox(width: 12),
-              ],
-              GestureDetector(
-                onTap: () => _onArticleShare(context),
-                child: Icon(
-                  Icons.file_upload_outlined,
-                  color: textStyle.secondary.color,
+          IconTheme(
+            data: IconThemeData(
+              color: textStyle.secondary.color,
+            ),
+            child: Row(
+              children: [
+                if (bookmarkBuilder != null) ...[
+                  bookmarkBuilder!(context, article.id, article.path),
+                  const SizedBox(width: 12),
+                ],
+                GestureDetector(
+                  onTap: () => _onArticleShare(context),
+                  child: const Icon(Icons.file_upload_outlined),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

@@ -3,7 +3,7 @@ import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final favouriteArticleProvider = StreamProvider.family.autoDispose(
+final favoriteArticleProvider = StreamProvider.family.autoDispose(
   (ref, int articleId) {
     final dao = ref.watch(articlesDaoProvider);
 
@@ -15,32 +15,34 @@ class BookmarkButton extends StatelessWidget {
   const BookmarkButton({
     super.key,
     required this.articleId,
+    required this.articlePath,
+    this.usePadding = false,
+    this.color,
   });
 
+  final Color? color;
   final int articleId;
+  final String articlePath;
+  final bool usePadding;
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (_, ref, __) {
-        final favouriteArticle = ref.watch(
-          favouriteArticleProvider(articleId),
+        final favoriteArticle = ref.watch(
+          favoriteArticleProvider(articleId),
         );
 
-        return favouriteArticle.when(
-          data: (isFavourite) {
-            final iconColor =
-                Theme.of(context).textTheme.labelLarge!.secondary.color;
-
+        return favoriteArticle.when(
+          data: (isFavorite) {
             return GestureDetector(
               onTap: () async {
-                if (isFavourite) {
+                if (isFavorite) {
                   await ref.read(articlesDaoProvider).deleteArticle(articleId);
                 } else {
                   final articlesProvider = ref.read(articlesRepositoryProvider);
-                  // log('saving article with slug: ${article.path}');
                   final articleDetails = await articlesProvider
-                      .getArticleDetailsById(id: articleId);
+                      .getArticleDetails(path: articlePath);
 
                   await ref.read(articlesDaoProvider).saveArticle(
                         ArticleConverter.toArticleWithAuthor(
@@ -49,11 +51,14 @@ class BookmarkButton extends StatelessWidget {
                       );
                 }
               },
-              child: Icon(
-                isFavourite
-                    ? Icons.bookmark_rounded
-                    : Icons.bookmark_border_rounded,
-                color: iconColor,
+              child: Padding(
+                padding: usePadding ? const EdgeInsets.all(8) : EdgeInsets.zero,
+                child: Icon(
+                  isFavorite
+                      ? Icons.bookmark_rounded
+                      : Icons.bookmark_border_rounded,
+                  color: color,
+                ),
               ),
             );
           },

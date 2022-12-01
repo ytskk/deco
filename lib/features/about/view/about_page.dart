@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({
@@ -34,13 +35,13 @@ class AboutPage extends StatelessWidget {
                   width: 120,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Text(
                 AppStrings.aboutAppFullName,
                 style: theme.textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 44),
+              const SizedBox(height: 32),
               Consumer(
                 builder: (BuildContext context, WidgetRef ref, Widget? child) {
                   final currentVersion = ref.watch(currentVersionProvider);
@@ -66,28 +67,41 @@ class AppVersionInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return TableGroup(
+      title: AppStrings.aboutAppVersion,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            'Version',
-          ),
-        ),
-        VersionButton(
-          version: versionInfo,
+        TableGroupRow(
           onTap: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (BuildContext context) {
-                  return const ChangelogPage();
-                },
-              ),
-            );
+            context.pushNamed(PathNames.changelog);
           },
+          title: VersionButton(
+            version: versionInfo,
+          ),
         ),
       ],
     );
+    // return Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     const Padding(
+    //       padding: EdgeInsets.symmetric(horizontal: 8),
+    //       child: Text(
+    //         'Version',
+    //       ),
+    //     ),
+    // VersionButton(
+    //       version: versionInfo,
+    //       onTap: () {
+    //         Navigator.of(context).push(
+    //           CupertinoPageRoute(
+    //             builder: (BuildContext context) {
+    //               return const ChangelogPage();
+    //             },
+    //           ),
+    //         );
+    //       },
+    //     ),
+    //   ],
+    // );
   }
 }

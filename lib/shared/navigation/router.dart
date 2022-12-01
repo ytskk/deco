@@ -35,6 +35,13 @@ final GoRouter router = GoRouter(
       path: PathNames.about,
       name: PathNames.about,
       builder: (_) => const AboutPage(),
+      routes: [
+        AppRoute(
+          path: PathNames.changelog,
+          name: PathNames.changelog,
+          builder: (_) => const ChangelogPage(),
+        ),
+      ],
     ),
     AppRoute(
       name: PathNames.tags,

@@ -4,12 +4,12 @@ class Separator extends StatelessWidget {
   const Separator.material({
     super.key,
     this.isAdaptive = false,
-  })  : isCupertino = false;
+  }) : isCupertino = false;
 
   const Separator.cupertino({
     super.key,
     this.isAdaptive = false,
-  })  : isCupertino = true;
+  }) : isCupertino = true;
 
   const Separator.adaptive({
     super.key,

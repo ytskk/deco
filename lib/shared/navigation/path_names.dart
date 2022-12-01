@@ -4,6 +4,7 @@ abstract class PathNames {
   static const String preferencesAppStyle = 'app-style';
   static const String preferencesComponents = 'components';
   static const String about = '/about';
+  static const String changelog = 'changelog';
   static const String tags = '/tags';
   static const String tagsByName = ':tagName';
   static const String tagsSelect = 'select-tags';

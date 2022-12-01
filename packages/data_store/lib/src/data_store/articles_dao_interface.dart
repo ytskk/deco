@@ -35,6 +35,9 @@ abstract class ArticlesDataStoreInterface {
   ///Checks is article exists in db
   Stream<bool> isArticleSaved(int articleId);
 
+  ///Checks is article read
+  Stream<bool> isArticleRead(int articleId);
+
   /// Returns stream of all saved articles for user with provided [userId].
   Stream<int> watchUserArticlesCount(int userId);
 
@@ -47,7 +50,7 @@ abstract class ArticlesDataStoreInterface {
   // UPDATE
 
   /// Changes article read status to opposite.
-  Future<ArticleWithAuthorModel> toggleRead(ArticleWithAuthorModel article);
+  Future<void> toggleRead(int articleId);
 
   /// Changes article read status true.
   Future<ArticleWithAuthorModel> markAsRead(ArticleWithAuthorModel article);

@@ -56,6 +56,7 @@ abstract class ArticleConverter {
       createdAt: article.createdAt,
       readingTimeMinutes: article.readingTimeMinutes,
       url: article.url,
+      path: article.path,
     );
   }
 
@@ -74,7 +75,9 @@ abstract class ArticleConverter {
       createdAt: article.article.createdAt,
       readingTimeMinutes: article.article.readingTimeMinutes,
       url: article.article.url,
+      path: article.article.path,
       tags: article.article.tags,
+      isRead: article.article.isRead,
     );
   }
 

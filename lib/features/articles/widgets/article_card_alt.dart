@@ -168,10 +168,10 @@ class _ArticleCardBottomInfo extends StatelessWidget {
                     color: theme.textTheme.labelMedium!.secondary.color,
                   ),
                 ),
-                if (bookmarkBuilder != null) ...[
-                  const SizedBox(width: 12),
-                  bookmarkBuilder!(context, article.id),
-                ],
+                // if (bookmarkBuilder != null) ...[
+                //   const SizedBox(width: 12),
+                //   bookmarkBuilder!(context, article.id),
+                // ],
               ],
             ),
             const Spacer(),

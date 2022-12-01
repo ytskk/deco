@@ -10,10 +10,6 @@ abstract class ArticlesRepositoryInterface {
     required String path,
   });
 
-  Future<ArticleDetailsModel> getArticleDetailsById({
-    required int id,
-  });
-
   Future<ArticleQuickInfoModel> getArticleCard({
     required String slug,
   });

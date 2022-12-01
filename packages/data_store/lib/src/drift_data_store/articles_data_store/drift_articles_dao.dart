@@ -86,6 +86,13 @@ class DriftArticlesDao extends DatabaseAccessor<DriftDataStore>
   }
 
   @override
+  Stream<bool> isArticleRead(int articleId) {
+    return (select(articles)..where((a) => a.id.equals(articleId)))
+        .watchSingleOrNull()
+        .map((a) => a?.isRead ?? false);
+  }
+
+  @override
   Stream<int> watchUserArticlesCount(int userId) {
     final articleQuery = _buildArticleWithAuthorQuery()
       ..where(articles.authorUserId.equals(userId));
@@ -208,9 +215,10 @@ class DriftArticlesDao extends DatabaseAccessor<DriftDataStore>
   }
 
   @override
-  Future<ArticleWithAuthorModel> toggleRead(ArticleWithAuthorModel article) {
-    // TODO: implement toggleRead
-    throw UnimplementedError();
+  Future<void> toggleRead(int articleId) async {
+    final article = await savedArticleById(articleId);
+    await update(articles)
+        .replace(article.article.copyWith(isRead: !article.article.isRead));
   }
   // Helper methods
 

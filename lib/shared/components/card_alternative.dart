@@ -12,12 +12,14 @@ class CardAlternative extends StatelessWidget {
   const CardAlternative({
     super.key,
     required this.child,
+    this.color,
     this.margin = defaultCardMargin,
     this.borderRadius = defaultBorderRadius,
     this.shadowIntense = defaultShadowIntense,
   });
 
   final Widget child;
+  final Color? color;
   final EdgeInsets margin;
   final double borderRadius;
   final ShadowIntense shadowIntense;
@@ -30,7 +32,7 @@ class CardAlternative extends StatelessWidget {
     return Container(
       margin: margin,
       decoration: BoxDecoration(
-        color: cardColor,
+        color: color ?? cardColor,
         borderRadius: BorderRadius.circular(defaultBorderRadius),
         boxShadow: isDark
             ? null

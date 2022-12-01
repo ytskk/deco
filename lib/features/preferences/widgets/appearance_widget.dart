@@ -4,13 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class AppearanceWidget extends ConsumerWidget {
   const AppearanceWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,6 +22,7 @@ class AppearanceWidget extends ConsumerWidget {
             TableGroupRow(
               title: const Text(AppStrings.preferencesAutomaticTitle),
               trailing: Switch.adaptive(
+                activeColor: primaryColor,
                 value: ref.watch(appThemePreferencesProvider).themeMode ==
                     ThemeMode.system,
                 onChanged: (value) {
@@ -44,6 +46,7 @@ class AppearanceWidget extends ConsumerWidget {
             TableGroupRow(
               title: const Text(AppStrings.preferencesUseDimColorsTitle),
               trailing: Switch.adaptive(
+                activeColor: primaryColor,
                 value: ref.watch(appThemePreferencesProvider).useDimColors,
                 onChanged: (onChanged) {
                   ref

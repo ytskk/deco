@@ -18,6 +18,8 @@ class ArticleCardModel {
     this.commentsCount,
     required this.readingTimeMinutes,
     required this.url,
+    required this.path,
+    this.isRead = false,
   });
 
   final int id;
@@ -32,4 +34,6 @@ class ArticleCardModel {
   final int? commentsCount;
   final int readingTimeMinutes;
   final String url;
+  final String path;
+  final bool isRead;
 }

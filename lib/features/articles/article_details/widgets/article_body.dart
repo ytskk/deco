@@ -121,7 +121,7 @@ class _ArticleBody extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: HtmlWidget(
         html,
         rebuildTriggers: RebuildTriggers([isDarkMode]),
@@ -158,13 +158,14 @@ class _ArticleBody extends StatelessWidget {
           return null;
         },
         customWidgetBuilder: (element) {
+          if (element.localName == 'hr') {
+            return const Separator.material();
+            // return Text('This is a divider');
+          }
+
+          // handle headings
           if (element.localName?.contains('h') == true) {
             return _tagHeadings(textTheme, element);
-          }
-          if (element.localName == 'hr') {
-            return const Divider(
-              thickness: 1,
-            );
           }
 
           final embedRegex = RegExp('{% embed .* %}');
@@ -178,75 +179,35 @@ class _ArticleBody extends StatelessWidget {
             return EmbeddedUrl(url: embeddedUrl);
           }
 
-          /// Handle code block.
+          if (element.localName == 'img') {
+            // log('figure: ${element.parent?.nodes}');
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: generateShadow(),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  element.attributes['src']!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
+            );
+          }
+
+          // Handle code block.
           if (element.localName == 'pre') {
             final theme = Theme.of(context);
             final lang =
                 element.firstChild?.attributes['class']?.split('-').last;
             final codeTheme = isDarkMode ? atomOneDarkTheme : atomOneLightTheme;
 
-            return SizedBox(
-              width: double.infinity,
-              child: Card(
-                color: codeTheme['root']?.backgroundColor,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        if (lang != null)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Text(
-                              lang,
-                              style:
-                                  theme.textTheme.labelSmall!.medium.secondary,
-                            ),
-                          ),
-                        const Spacer(),
-                        CupertinoButton(
-                          // padding: EdgeInsets.zero,
-                          // minSize: 0,
-                          child: Text(
-                            AppStrings.articleDetailsCopy,
-                            style: theme.textTheme.labelMedium!.medium.copyWith(
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
-
-                          /// TODO(me): inject this.
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(
-                                text: element.text,
-                              ),
-                            );
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    AppStrings.authorInfoAppBarUsernameCopied),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    // const Separator.adaptive(),
-                    SizedBox(
-                      width: double.infinity,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: HighlightView(
-                          element.text,
-                          language: lang ?? 'auto',
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          theme: codeTheme,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            return CodeBlock(
+              codeTheme: codeTheme,
+              lang: lang,
+              text: element.text,
             );
           }
 
@@ -259,11 +220,12 @@ class _ArticleBody extends StatelessWidget {
   Widget? _tagHeadings(TextTheme textTheme, dom.Element element) {
     if (element.localName?.contains('h') == true && element.id.isNotEmpty) {
       final headingElement = element.localName!;
+      final headingValue = int.parse(headingElement.substring(1));
       final headingStyle = _matchTextStyleToHeading(headingElement, textTheme);
-      log('headingStyle: $headingElement');
+
       return Padding(
-        padding: const EdgeInsets.only(
-          top: 24,
+        padding: EdgeInsets.only(
+          top: 44 / headingValue.toDouble(),
           bottom: 4,
         ),
         child: AutoScrollTag(
@@ -290,10 +252,91 @@ class _ArticleBody extends StatelessWidget {
       case 'h3':
         return textTheme.displayMedium!.bold;
       case 'h4':
-        return textTheme.displayMedium!.medium;
+        return textTheme.displaySmall!.medium;
       default:
         return textTheme.displaySmall;
     }
+  }
+}
+
+class CodeBlock extends StatelessWidget {
+  const CodeBlock({
+    super.key,
+    required this.codeTheme,
+    required this.lang,
+    required this.text,
+  });
+
+  final Map<String, TextStyle> codeTheme;
+  final String? lang;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        color: codeTheme['root']?.backgroundColor,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                if (lang != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Text(
+                      lang!,
+                      style: theme.textTheme.labelSmall!.medium.secondary,
+                    ),
+                  ),
+                const Spacer(),
+                CupertinoButton(
+                  // padding: EdgeInsets.zero,
+                  // minSize: 0,
+                  child: Text(
+                    AppStrings.articleDetailsCopy,
+                    style: theme.textTheme.labelMedium!.medium.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+
+                  /// TODO(me): inject this.
+                  onPressed: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: text,
+                      ),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text(AppStrings.authorInfoAppBarUsernameCopied),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            // const Separator.adaptive(),
+            SizedBox(
+              width: double.infinity,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: HighlightView(
+                  text,
+                  language: lang ?? 'auto',
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  theme: codeTheme,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -343,11 +386,18 @@ class EmbeddedUrl extends StatelessWidget {
     }
 
     final theme = Theme.of(context);
+    log(
+      'URL can be embedded: $url',
+      name: 'EmbeddedUrl::build',
+    );
 
-    return Text(
-      url,
-      style: theme.textTheme.labelMedium!.medium.copyWith(
-        color: theme.colorScheme.primary,
+    return GestureDetector(
+      onTap: () => launchUrl(Uri.parse(url)),
+      child: Text(
+        url,
+        style: theme.textTheme.labelMedium!.medium.copyWith(
+          color: theme.colorScheme.primary,
+        ),
       ),
     );
   }

@@ -47,9 +47,10 @@ class BookmarkList extends StatelessWidget {
                       article.article.path,
                     );
                   },
-                  bookmarkBuilder: (_, articleId) {
+                  bookmarkBuilder: (_, articleId, articlePath) {
                     return BookmarkButton(
                       articleId: articleId,
+                      articlePath: articlePath,
                     );
                   },
                 );

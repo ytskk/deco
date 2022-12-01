@@ -1,5 +1,6 @@
 export 'account_avatar.dart';
 export 'adaptive_search_field.dart';
+export 'box_shadow.dart';
 export 'card_alternative.dart';
 export 'constrained_content_box.dart';
 export 'description_text.dart';

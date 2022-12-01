@@ -38,8 +38,11 @@ class AuthorArticlesList extends StatelessWidget {
               isOrganization,
             );
           },
-          bookmarkBuilder: (_, articleId) {
-            return BookmarkButton(articleId: articleId);
+          bookmarkBuilder: (_, articleId, articlePath) {
+            return BookmarkButton(
+              articleId: articleId,
+              articlePath: articlePath,
+            );
           },
         );
       },

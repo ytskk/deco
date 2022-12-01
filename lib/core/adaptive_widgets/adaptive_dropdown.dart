@@ -110,7 +110,7 @@ class _MaterialDropdownState<T> extends State<_MaterialDropdown<T>> {
     final button = context.findRenderObject()! as RenderBox;
     final overlay =
         Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
-    final offset = Offset(1, 0);
+    const offset = Offset(1, 0);
 
     final position = RelativeRect.fromRect(
       Rect.fromPoints(
@@ -196,7 +196,8 @@ class _CupertinoDropdown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return PullDownButton(
       itemBuilder: (context) => _buildDropdownMenuItems(items),
-      offset: Offset(1, 0),
+      offset: const Offset(1, 0),
+      position: PullDownMenuPosition.automatic,
       buttonBuilder: (context, showMenu) {
         return itemBuilder(
           context,

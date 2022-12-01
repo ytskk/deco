@@ -71,8 +71,11 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
                     extra: state.articles.elementAt(index),
                   );
                 },
-                bookmarkBuilder: (_, articleId) {
-                  return BookmarkButton(articleId: articleId);
+                bookmarkBuilder: (_, articleId, articlePath) {
+                  return BookmarkButton(
+                    articleId: articleId,
+                    articlePath: articlePath,
+                  );
                 },
               );
             },
@@ -111,7 +114,7 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
         },
       );
     } catch (error) {
-      ref.read(articleListStateProvider(widget.type).state).update(
+      ref.read(articleListStateProvider(widget.type).notifier).update(
             (state) => state.copyWith(hasError: true),
           );
       // log('error: $error');

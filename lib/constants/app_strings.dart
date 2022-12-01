@@ -52,4 +52,5 @@ abstract class AppStrings {
   static const String aboutAppFullName =
       '$aboutAppName (Unofficial DEV Community App)';
   static const String aboutChangelogAppBarTitle = 'Changelog';
+  static const String aboutAppVersion = 'Version';
 }

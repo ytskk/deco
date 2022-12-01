@@ -16,7 +16,8 @@ class PaddedTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
         title,
-        style: style ?? Theme.of(context).textTheme.labelLarge?.secondary,
+        style:
+            style ?? Theme.of(context).textTheme.labelLarge!.medium.secondary,
       ),
     );
   }

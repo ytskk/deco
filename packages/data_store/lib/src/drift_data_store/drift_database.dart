@@ -28,10 +28,10 @@ class DriftDataStore extends _$DriftDataStore {
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (Migrator m) async {
-          // await m.createAll();
-          await m.alterTable(TableMigration(articles));
-          await m.alterTable(TableMigration(users));
-          await m.alterTable(TableMigration(organizations));
+          await m.createAll();
+          // await m.alterTable(TableMigration(articles));
+          // await m.alterTable(TableMigration(users));
+          // await m.alterTable(TableMigration(organizations));
         },
         onUpgrade: (Migrator m, int from, int to) async {
           log('onUpgrade: from: $from, to: $to');

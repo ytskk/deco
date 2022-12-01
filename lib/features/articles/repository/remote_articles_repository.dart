@@ -89,25 +89,18 @@ class RemoteArticlesRepository implements ArticlesRepositoryInterface {
     }
   }
 
-  @override
-  Future<ArticleDetailsModel> getArticleDetailsById({required int id}) async {
-    final articleDetails = await _loadArticleData(id.toString());
-
-    return articleDetails;
-  }
-
   Future<ArticleDetailsModel> _loadArticleData(String value) async {
-    final res = await _dio.get(
-      StringUtils.joinBy(
-        [
-          ApiConstants.articles,
-          value,
-        ],
-        separator: '/',
-      ),
+    log(
+      'loading articles data for $value',
+      name: 'RemoteArticlesRepository::_loadArticleData',
+    );
+    final res = await _dio.get(ApiConstants.articles + value);
+
+    final articleDetails = ArticleDetailsModel.fromJson(
+      res.data as Map<String, dynamic>,
     );
 
-    return ArticleDetailsModel.fromJson(res.data as Map<String, dynamic>);
+    return articleDetails;
   }
 
   @override
