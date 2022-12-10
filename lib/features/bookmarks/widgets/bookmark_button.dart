@@ -1,7 +1,10 @@
+import 'package:dev_community/constants/app_icons.dart';
 import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 final favoriteArticleProvider = StreamProvider.family.autoDispose(
   (ref, int articleId) {
@@ -27,6 +30,8 @@ class BookmarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = Theme.of(context).textTheme.bodyMedium!.secondary.color;
+
     return Consumer(
       builder: (_, ref, __) {
         final favoriteArticle = ref.watch(
@@ -50,14 +55,24 @@ class BookmarkButton extends StatelessWidget {
                         ),
                       );
                 }
+                await HapticFeedback.mediumImpact();
               },
               child: Padding(
                 padding: usePadding ? const EdgeInsets.all(8) : EdgeInsets.zero,
-                child: Icon(
-                  isFavorite
-                      ? Icons.bookmark_rounded
-                      : Icons.bookmark_border_rounded,
-                  color: color,
+                child: AnimatedCrossFade(
+                  firstChild: IconBox(
+                    assetName: AppIcons.bookmark,
+                    color: color ?? iconColor,
+                  ),
+                  secondChild: IconBox(
+                    assetName: AppIcons.bookmarkFill,
+                    color: color ?? iconColor,
+                  ),
+                  crossFadeState: isFavorite
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
+                  duration: const Duration(milliseconds: 250),
+                  secondCurve: Curves.easeOut,
                 ),
               ),
             );

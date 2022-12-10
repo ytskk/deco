@@ -1,5 +1,7 @@
+export 'animations/animations.dart';
 export 'components/components.dart';
 export 'converters/converters.dart';
+export 'models/models.dart';
 export 'navigation/navigation.dart';
 export 'providers/providers.dart';
 export 'theme/theme.dart';

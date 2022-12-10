@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO: fading button
 class FadingButton extends StatelessWidget {
   const FadingButton({
     super.key,

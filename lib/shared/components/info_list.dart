@@ -40,11 +40,11 @@ class InfoList extends StatelessWidget {
           ),
           if (description != null) ...[
             const SizedBox(
-              height: 2,
+              height: 8,
             ),
             Text(
               description!,
-              style: textTheme.bodyLarge,
+              style: textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           ],

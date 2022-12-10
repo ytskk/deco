@@ -1,10 +1,11 @@
 import 'dart:developer';
 
 import 'package:dev_community/features/features.dart';
-import 'package:dev_community/shared/providers/shared_utility_provider.dart';
+import 'package:dev_community/shared/shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final tagsProvider = StateNotifierProvider<TagNotifier, List<TagModel>>(
+final tagsProvider =
+    StateNotifierProvider<TagNotifier, LoadingDataModel<List<TagModel>>>(
   (ref) {
     final tagsRepository = ref.watch(tagsRepositoryProvider);
     final sharedUtility = ref.watch(sharedUtilityProvider);
@@ -17,20 +18,25 @@ final tagsProvider = StateNotifierProvider<TagNotifier, List<TagModel>>(
   },
 );
 
-class TagNotifier extends StateNotifier<List<TagModel>> {
+class TagNotifier extends StateNotifier<LoadingDataModel<List<TagModel>>> {
   TagNotifier(
     this.ref, {
     required TagsRepositoryInterface tagsRepository,
     required SharedUtility sharedUtility,
   })  : _tagsRepository = tagsRepository,
         _sharedUtility = sharedUtility,
-        super([]) {
+        super(
+          const LoadingDataModel(
+            defaultValue: [],
+          ),
+        ) {
     getSelectedTags();
   }
 
   final TagsRepositoryInterface _tagsRepository;
   final SharedUtility _sharedUtility;
   final Ref ref;
+  int page = 1;
 
   List<TagModel> getSelectedTags() {
     log('getting tags again');
@@ -40,17 +46,26 @@ class TagNotifier extends StateNotifier<List<TagModel>> {
   }
 
   void _updateSavedTags() {
-    final selectedTags = state.where((tag) => tag.isSelected).toList();
+    final selectedTags = state.data!.where((tag) => tag.isSelected).toList();
 
     _sharedUtility.savedTags = selectedTags;
     ref.read(selectedTagsProvider.notifier).update((state) => selectedTags);
   }
 
-  /// Returns all fetched tags, if tags in selected, updates isSelected to true.
-  Future<List<TagModel>> getTags({
-    int page = 1,
-    int perPage = 200,
+  /// Fetches tags, if tags in selected, updates isSelected to true.
+  Future<void> getTags({
+    int perPage = 20,
   }) async {
+    log(
+      'loading tags for page $page',
+      name: 'TagNotifier::getTags',
+    );
+
+    state = state.copyWith(isLoading: true);
+    if (page == 1) {
+      perPage = 200;
+    }
+
     final tags = await _tagsRepository.getTags(
       page: page,
       perPage: perPage,
@@ -66,21 +81,26 @@ class TagNotifier extends StateNotifier<List<TagModel>> {
       return tag.copyWith(isSelected: isTagSaved);
     }).toList();
 
-    state = updatedTags;
+    state = state.copyWith(
+      isLoading: false,
+      data: (state.data ?? []) + updatedTags,
+    );
 
-    return state;
+    page += 1;
   }
 
   void toggleTagSelection(TagModel tag) {
     final newTag = tag.copyWith(isSelected: !tag.isSelected);
-    final newState = state.map(
-      (t) {
-        if (t.id == tag.id) {
-          return newTag;
-        }
-        return t;
-      },
-    ).toList();
+    final newState = state.copyWith(
+      data: state.data!.map(
+        (t) {
+          if (t.id == tag.id) {
+            return newTag;
+          }
+          return t;
+        },
+      ).toList(),
+    );
 
     log('updating ${newTag.name} to ${newTag.isSelected}');
 

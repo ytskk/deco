@@ -6,7 +6,7 @@ const defaultCardMargin = EdgeInsets.symmetric(
 );
 
 const double defaultBorderRadius = 24;
-const defaultShadowIntense = ShadowIntense.light;
+const defaultShadowIntense = ShadowIntense.medium;
 
 class CardAlternative extends StatelessWidget {
   const CardAlternative({
@@ -40,6 +40,11 @@ class CardAlternative extends StatelessWidget {
                 BoxShadow(
                   color: Colors.black.withOpacity(shadowIntense.value),
                   blurRadius: 16,
+                  offset: const Offset(2, 5),
+                ),
+                BoxShadow(
+                  color: Colors.black.withOpacity(ShadowIntense.light.value),
+                  blurRadius: 8,
                   offset: const Offset(2, 5),
                 ),
               ],

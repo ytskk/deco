@@ -30,7 +30,7 @@ class ArticleInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -47,7 +47,7 @@ class ArticleInfo extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 title,
-                style: theme.textTheme.displayLarge!.heavy,
+                style: theme.textTheme.displayLarge!.bold,
               ),
               if (tags != null) ...[
                 const SizedBox(height: 12),

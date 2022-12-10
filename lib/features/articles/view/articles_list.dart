@@ -29,6 +29,9 @@ class ArticlesList extends ConsumerStatefulWidget {
 class _ArticlesListState extends ConsumerState<ArticlesList> {
   @override
   Widget build(BuildContext context) {
+    final onBackgroundColor =
+        Theme.of(context).textTheme.bodyMedium!.secondary.color;
+
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         final state = ref.watch(articleListStateProvider(widget.type));
@@ -56,7 +59,7 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
             },
 
             /// TODO: beautify
-            errorBuilder: (context) => Center(
+            errorBuilder: (context) => const Center(
               child: Text('error'),
             ),
             itemBuilder: (BuildContext context, int index) {
@@ -75,6 +78,7 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
                   return BookmarkButton(
                     articleId: articleId,
                     articlePath: articlePath,
+                    color: onBackgroundColor,
                   );
                 },
               );
@@ -89,7 +93,7 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
   /// every time the widget is created.
   Future<void> _loadPage(int page) async {
     try {
-      ref.read(articleListStateProvider(widget.type).state).update(
+      ref.read(articleListStateProvider(widget.type).notifier).update(
             (state) => state.copyWith(isLoading: true),
           );
 
@@ -98,7 +102,7 @@ class _ArticlesListState extends ConsumerState<ArticlesList> {
             page: page,
           );
 
-      ref.read(articleListStateProvider(widget.type).state).update(
+      ref.read(articleListStateProvider(widget.type).notifier).update(
         (state) {
           final newArticles =
               page == 1 ? articles : [...state.articles, ...articles];

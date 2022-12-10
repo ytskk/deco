@@ -6,11 +6,13 @@ import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:scrolls_to_top/scrolls_to_top.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 final articleDetailsControllerProvider = StateNotifierProvider.autoDispose
@@ -30,7 +32,7 @@ final articleDetailsControllerProvider = StateNotifierProvider.autoDispose
 // TODO(me): add table of contents to article.
 
 final floatingIslandProvider = StateProvider.autoDispose<bool>((ref) {
-  return false;
+  return true;
 });
 
 class ArticleDetailsPage extends StatelessWidget {
@@ -64,9 +66,24 @@ class ArticleDetailsPage extends StatelessWidget {
                     automaticallyImplyLeading: false,
                     toolbarHeight: 0,
                   ),
-                  floatingActionButton: isFloating
-                      ? ArticleDetailsFloatingIsland(article: details)
-                      : null,
+                  floatingActionButton: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) => FadeTransition(
+                      opacity: animation,
+                      child: ScaleTransition(
+                        scale: animation.drive(
+                          Tween<double>(
+                            begin: 0.92,
+                            end: 1,
+                          ),
+                        ),
+                        child: child,
+                      ),
+                    ),
+                    child: isFloating
+                        ? ArticleDetailsFloatingIsland(article: details)
+                        : null,
+                  ),
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerFloat,
                   body: _ArticleDetailsView(articleDetails: details),
@@ -92,9 +109,9 @@ class ArticleDetailsPage extends StatelessWidget {
 
 class ArticleDetailsFloatingIsland extends StatelessWidget {
   const ArticleDetailsFloatingIsland({
-    Key? key,
+    super.key,
     required this.article,
-  }) : super(key: key);
+  });
 
   final ArticleDetailsModel article;
 
@@ -136,7 +153,7 @@ class ArticleDetailsFloatingIsland extends StatelessWidget {
                             stream: isRead,
                             builder: (BuildContext context,
                                 AsyncSnapshot<bool> snapshot) {
-                              final value = snapshot.data ?? false;
+                              final isReadValue = snapshot.data ?? false;
 
                               return IconButton(
                                 splashColor: Colors.transparent,
@@ -145,9 +162,29 @@ class ArticleDetailsFloatingIsland extends StatelessWidget {
                                   ref
                                       .read(articlesDaoProvider)
                                       .toggleRead(article.id);
+                                  HapticFeedback.mediumImpact();
                                 },
-                                icon: Icon(
-                                  value ? Icons.circle : Icons.circle_outlined,
+                                icon: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 300),
+                                  switchInCurve: Curves.easeOut,
+                                  switchOutCurve: Curves.easeOut,
+                                  transitionBuilder: (child, animation) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                  child: isReadValue
+                                      ? const IconBox(
+                                          key: ValueKey('read'),
+                                          assetName: AppIcons.readFill,
+                                          color: Colors.white,
+                                        )
+                                      : const IconBox(
+                                          key: ValueKey('unread'),
+                                          assetName: AppIcons.read,
+                                          color: Colors.white,
+                                        ),
                                 ),
                               );
                             },
@@ -165,11 +202,8 @@ class ArticleDetailsFloatingIsland extends StatelessWidget {
               articleId: article.id,
               articlePath: article.path,
               usePadding: true,
+              color: Colors.white,
             ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const Icon(CupertinoIcons.chat_bubble),
-            // ),
             IconButton(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
@@ -186,27 +220,26 @@ class ArticleDetailsFloatingIsland extends StatelessWidget {
                   ),
                 );
               },
-              icon: const Icon(CupertinoIcons.share),
+              icon: const IconBox(
+                assetName: AppIcons.share,
+                color: Colors.white,
+              ),
             ),
             IconButton(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              onPressed: () {},
-              icon: const Icon(Icons.more_horiz),
+              onPressed: () {
+                launchUrlString(
+                  article.url,
+                  mode: LaunchMode.externalApplication,
+                );
+              },
+              icon: const IconBox(
+                assetName: AppIcons.globe,
+                color: Colors.white,
+              ),
             ),
             // TODO: dropdown menu with open original link, re-download button.
-            // AdaptiveDropdown<int>(
-            //   value: 1,
-            //   items: [
-            //     DropdownValue(value: 1, title: '1'),
-            //   ],
-            //   itemBuilder: (context, item, showMenu) => IconButton(
-            //     onPressed: () {
-            //       showMenu(context);
-            //     },
-            //     icon: Icon(Icons.more_horiz),
-            //   ),
-            // ),
           ],
         );
       },
@@ -236,7 +269,15 @@ class FloatingIsland extends StatelessWidget {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: children,
+          children: [
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: children,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -292,7 +333,8 @@ class _ArticleDetailsViewState extends State<_ArticleDetailsView> {
             title: widget.articleDetails.title,
             coverImage: widget.articleDetails.coverImage,
             tags: widget.articleDetails.tags,
-            readingTime: widget.articleDetails.readingTimeMinutes.toString(),
+            readingTime:
+                widget.articleDetails.readingTimeMinutes.clampMin(1).toString(),
             relativeDate:
                 StringUtils.relativeDate(widget.articleDetails.createdAt),
           ),

@@ -25,6 +25,9 @@ class AuthorArticlesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconSecondaryColor =
+        Theme.of(context).textTheme.bodyMedium!.secondary.color;
+
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
         final state = ref.watch(authorArticlesLoadModelProvider(authorName));
@@ -42,6 +45,7 @@ class AuthorArticlesList extends StatelessWidget {
             return BookmarkButton(
               articleId: articleId,
               articlePath: articlePath,
+              color: iconSecondaryColor,
             );
           },
         );

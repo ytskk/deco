@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dev_community/constants/app_icons.dart';
 import 'package:dev_community/features/features.dart';
+import 'package:dev_community/shared/shared.dart';
 import 'package:dev_community/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 typedef BookmarkBuilder = Widget Function(
   BuildContext context,
@@ -146,36 +149,34 @@ class _ArticleCardBottom extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme.labelLarge;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
       child: Row(
         children: [
           Text(
             StringUtils.joinBy(
               [
                 StringUtils.relativeDate(article.createdAt),
-                '${article.readingTimeMinutes.clamp(1, 999)} min read',
+                '${article.readingTimeMinutes.clampMin(1)} min read',
               ],
               separator: ' • ',
             ),
             style: textStyle!.medium.secondary,
           ),
           const Spacer(),
-          IconTheme(
-            data: IconThemeData(
-              color: textStyle.secondary.color,
-            ),
-            child: Row(
-              children: [
-                if (bookmarkBuilder != null) ...[
-                  bookmarkBuilder!(context, article.id, article.path),
-                  const SizedBox(width: 12),
-                ],
-                GestureDetector(
-                  onTap: () => _onArticleShare(context),
-                  child: const Icon(Icons.file_upload_outlined),
-                ),
+          Row(
+            children: [
+              if (bookmarkBuilder != null) ...[
+                bookmarkBuilder!(context, article.id, article.path),
+                const SizedBox(width: 16),
               ],
-            ),
+              GestureDetector(
+                onTap: () => _onArticleShare(context),
+                child: IconBox(
+                  assetName: AppIcons.share,
+                  color: textStyle.secondary.color,
+                ),
+              ),
+            ],
           ),
         ],
       ),

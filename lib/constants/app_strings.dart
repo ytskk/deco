@@ -25,7 +25,7 @@ abstract class AppStrings {
   // tags
   static const String tagsSelectionInfoTitle = 'Tags';
   static const String tagsSelectionInfoDescription =
-      'Tags are used to categorize posts. You can select the tags you want to see in the feed. You can also select the tags you want to see in the feed. If tags were not found, try to scroll and load more. Good Luck!';
+      'Tags are used to categorize posts. You can also select the tags you want to see in the feed.';
   static const String tagsSearchEmptyTitle = 'No results.';
   static const String tagsSearchEmptySubtitle =
       'Try to change the search query.';

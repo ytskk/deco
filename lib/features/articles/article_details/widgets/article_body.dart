@@ -121,7 +121,7 @@ class _ArticleBody extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: HtmlWidget(
         html,
         rebuildTriggers: RebuildTriggers([isDarkMode]),
@@ -246,11 +246,11 @@ class _ArticleBody extends StatelessWidget {
   TextStyle? _matchTextStyleToHeading(String heading, TextTheme textTheme) {
     switch (heading) {
       case 'h1':
-        return textTheme.displayLarge!.heavy;
-      case 'h2':
-        return textTheme.displayLarge!.bold;
-      case 'h3':
         return textTheme.displayMedium!.bold;
+      case 'h2':
+        return textTheme.displayMedium!.bold;
+      case 'h3':
+        return textTheme.displaySmall!.bold;
       case 'h4':
         return textTheme.displaySmall!.medium;
       default:
