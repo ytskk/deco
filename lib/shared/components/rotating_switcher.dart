@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class RotatingSwitch extends StatelessWidget {
-  const RotatingSwitch({
+class RotatingSwitcher extends StatelessWidget {
+  const RotatingSwitcher({
     super.key,
     required this.firstChild,
     required this.secondChild,

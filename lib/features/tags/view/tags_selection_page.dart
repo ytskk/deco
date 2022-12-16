@@ -109,7 +109,7 @@ class TagTileItem extends StatelessWidget {
         style: theme.textTheme.bodySmall,
       ),
       minLeadingWidth: 8,
-      trailing: RotatingSwitch(
+      trailing: RotatingSwitcher(
         showFirst: tag.isSelected,
         firstChild: Icon(
           Icons.check_box_rounded,
