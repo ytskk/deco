@@ -7,6 +7,7 @@ export 'description_text.dart';
 export 'icon_label.dart';
 export 'info_list.dart';
 export 'padded_title.dart';
+export 'rotating_switch.dart';
 export 'separator.dart';
 export 'table_group.dart';
 export 'table_group_row.dart';

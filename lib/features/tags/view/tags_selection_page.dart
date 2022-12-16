@@ -100,64 +100,31 @@ class TagTileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final tagIcon = _mapTagIcon(tag.name);
     final iconColor = theme.colorScheme.primary;
 
     return ListTile(
       onTap: onTap,
-      leading: tagIcon != null
-          ? IconBox(
-              assetName: tagIcon,
-              size: 24,
-              color: theme.textTheme.bodyMedium!.color,
-            )
-          : null,
       title: Text(
         tag.name.toCapitalized(),
         style: theme.textTheme.bodySmall,
       ),
       minLeadingWidth: 8,
-      trailing: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
-        switchInCurve: Curves.easeInOut,
-        switchOutCurve: Curves.easeInOut,
-        transitionBuilder: (child, anim) => RotationTransition(
-          turns: child.key == const ValueKey('icon1')
-              ? Tween<double>(begin: 0.5, end: 0).animate(anim)
-              : Tween<double>(begin: 0, end: 0.5).animate(anim),
-          child: FadeTransition(
-            opacity: anim,
-            child: ScaleTransition(
-              scale: anim,
-              child: child,
-            ),
-          ),
+      trailing: RotatingSwitch(
+        showFirst: tag.isSelected,
+        firstChild: Icon(
+          Icons.check_box_rounded,
+          key: const ValueKey('icon1'),
+          color: iconColor,
         ),
-        child: tag.isSelected
-            ? Icon(
-                Icons.check_box_rounded,
-                key: const ValueKey('icon1'),
-                color: iconColor,
-              )
-            : Icon(
-                Icons.check_box_outline_blank_rounded,
-                key: const ValueKey('icon2'),
-                color: iconColor,
-              ),
+        secondChild: Icon(
+          Icons.check_box_outline_blank_rounded,
+          key: const ValueKey('icon2'),
+          color: iconColor,
+        ),
       ),
       dense: true,
       visualDensity: VisualDensity.compact,
     );
-  }
-
-  String? _mapTagIcon(String tagName) {
-    final Map<String, String> tagIcons = {
-      'webdev': AppIcons.devLogo,
-    };
-
-    final tagIcon = tagIcons[tagName];
-
-    return tagIcon;
   }
 }
 

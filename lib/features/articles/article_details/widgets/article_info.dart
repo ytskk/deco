@@ -5,6 +5,7 @@ import 'package:dev_community/constants/constants.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 class ArticleInfo extends StatelessWidget {
   const ArticleInfo({
@@ -65,7 +66,13 @@ class ArticleInfo extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            log('TODO: navigate to tag page by tag name.');
+                            // log('TODO: navigate to tag page by tag name.');
+                            context.pushNamed(
+                              PathNames.tagsByName,
+                              params: {
+                                PathNames.tagsByName: tag,
+                              },
+                            );
                             HapticFeedback.lightImpact();
                           },
                         ),

@@ -19,4 +19,7 @@ extension TextWidths on TextStyle {
 
   /// Returns the text style with 0.3 color opacity.
   TextStyle get tertiary => copyWith(color: color?.withOpacity(0.3));
+
+  /// Returns the text style with 0.3 color opacity.
+  TextStyle get quaternary => copyWith(color: color?.withOpacity(0.1));
 }

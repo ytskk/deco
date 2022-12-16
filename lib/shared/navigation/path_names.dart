@@ -6,7 +6,7 @@ abstract class PathNames {
   static const String about = '/about';
   static const String changelog = 'changelog';
   static const String tags = '/tags';
-  static const String tagsByName = ':tagName';
+  static const String tagsByName = 'tagName';
   static const String tagsSelect = 'select-tags';
   static const String articles = '/articles';
   static const String username = 'username';

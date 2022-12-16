@@ -43,6 +43,8 @@ final GoRouter router = GoRouter(
         ),
       ],
     ),
+
+    /// Tags routes.
     AppRoute(
       name: PathNames.tags,
       path: PathNames.tags,
@@ -51,6 +53,16 @@ final GoRouter router = GoRouter(
           name: PathNames.tagsSelect,
           path: PathNames.tagsSelect,
           builder: (_) => const TagsSelectionPage(),
+        ),
+        AppRoute(
+          name: PathNames.tagsByName,
+          path: ':${PathNames.tagsByName}',
+          builder: (state) {
+            final tagName = state.params[PathNames.tagsByName];
+            return TagArticlesPage(
+              name: tagName!,
+            );
+          },
         ),
       ],
     ),

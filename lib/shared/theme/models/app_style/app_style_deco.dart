@@ -151,6 +151,7 @@ class AppStyleDeco extends AppStyle {
       primary: Color(0xFF5F7EEC),
       background: Color(0xFF121217),
       primaryContainer: Color(0xFF1F1F24),
+      tertiaryContainer: Color(0xFF9A9AA2),
       outline: Color(0xFF343434),
     );
 

@@ -89,6 +89,14 @@ class TagNotifier extends StateNotifier<LoadingDataModel<List<TagModel>>> {
     page += 1;
   }
 
+  Future<bool> isTagSelected(String name) async {
+    final selectedTags = getSelectedTags();
+
+    return selectedTags.any(
+      (selectedTag) => selectedTag.name == name,
+    );
+  }
+
   void toggleTagSelection(TagModel tag) {
     final newTag = tag.copyWith(isSelected: !tag.isSelected);
     final newState = state.copyWith(
