@@ -86,19 +86,6 @@ class AuthorSliverAppbar extends StatelessWidget {
                 radius: 44,
                 accountName: author.username,
               ),
-              // child: SizedBox(
-              //   height: 100,
-              //   width: 100,
-              //   child: DecoratedBox(
-              //     decoration: BoxDecoration(
-              //       shape: BoxShape.circle,
-              //       image: DecorationImage(
-              //         image: NetworkImage(author.profileImage),
-              //         fit: BoxFit.cover,
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ),
             const SizedBox(height: 84),
           ],

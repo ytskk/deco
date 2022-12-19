@@ -5,25 +5,28 @@ class LoadingDataModel<T> {
   const LoadingDataModel({
     T? data,
     this.isLoading = false,
-    this.hasError = false,
     this.hasReachedMax = false,
     T? defaultValue,
+    this.error,
   }) : data = data ?? defaultValue;
 
   final T? data;
   final bool isLoading;
-  final bool hasError;
   final bool hasReachedMax;
+  final Object? error;
+
+  bool get hasError => error != null;
 
   LoadingDataModel<T> copyWith({
     T? data,
     bool? isLoading,
     bool? hasError,
+    Object? error,
   }) {
     return LoadingDataModel<T>(
       data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
-      hasError: hasError ?? this.hasError,
+      error: error,
     );
   }
 
@@ -34,8 +37,8 @@ class LoadingDataModel<T> {
           runtimeType == other.runtimeType &&
           data == other.data &&
           isLoading == other.isLoading &&
-          hasError == other.hasError;
+          error == other.error;
 
   @override
-  int get hashCode => data.hashCode ^ isLoading.hashCode ^ hasError.hashCode;
+  int get hashCode => data.hashCode ^ isLoading.hashCode ^ error.hashCode;
 }

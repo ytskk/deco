@@ -35,6 +35,7 @@ class AuthorInfo extends StatelessWidget {
                   if (author.story != null)
                     ExpandableText(
                       author.story!,
+                      style: theme.textTheme.bodyMedium,
                       expandText: 'More',
                       animation: true,
                       collapseOnTextTap: true,
@@ -46,8 +47,8 @@ class AuthorInfo extends StatelessWidget {
                   if (author.tagLine != null)
                     Text(
                       author.tagLine!,
-                      style: theme.textTheme.labelSmall!.copyWith(
-                        color: theme.colorScheme.tertiary,
+                      style: theme.textTheme.bodySmall!.copyWith(
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                 ],

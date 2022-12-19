@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dev_community/constants/constants.dart';
 import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,10 @@ class TagArticlesPage extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
       ),
-      body: ArticlesList(type: name),
+      body: ArticlesList(
+        type: name,
+        spacing: Spacing.giant5,
+      ),
     );
   }
 }

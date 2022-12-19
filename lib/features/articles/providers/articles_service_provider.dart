@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dev_community/features/articles/articles.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final articlesServiceProvider =
@@ -25,15 +28,20 @@ class ArticlesService {
   Future<ArticlesLoadModel> loadArticles({
     int? page,
   }) async {
-    final articles = await _articlesRepository.getArticles(
-      page: page ?? _articlesLoadModel.page,
-      type: _articlesLoadModel.type,
-    );
+    try {
+      final articles = await _articlesRepository.getArticles(
+        page: page ?? _articlesLoadModel.page,
+        type: _articlesLoadModel.type,
+      );
 
-    return _articlesLoadModel.copyWith(
-      articles: articles,
-      page: page != null ? page + 1 : _articlesLoadModel.page + 1,
-    );
+      return _articlesLoadModel.copyWith(
+        articles: articles,
+        page: page != null ? page + 1 : _articlesLoadModel.page + 1,
+      );
+    } on DioError catch (e) {
+      log('error: $e');
+      rethrow;
+    }
   }
 
   Future<ArticlesLoadModel> refreshArticles() async {

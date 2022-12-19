@@ -1,9 +1,5 @@
-import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// TODO: fading button
 class FadingButton extends StatefulWidget {
   const FadingButton({
     super.key,
@@ -42,6 +38,7 @@ class _FadingButtonState extends State<FadingButton>
     _setTween();
   }
 
+  // uncomment when you will need it :)
   // @override
   // void didUpdateWidget(FadingButton old) {
   //   super.didUpdateWidget(old);

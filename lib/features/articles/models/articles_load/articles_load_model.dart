@@ -11,6 +11,7 @@ class ArticlesLoadModel with _$ArticlesLoadModel {
     @Default(false) bool isLoading,
     @Default(false) bool hasReachedMax,
     @Default(false) bool hasError,
+    Object? error,
     @Default([]) List<ArticleQuickInfoModel> articles,
   }) = _ArticlesLoadModel;
 }

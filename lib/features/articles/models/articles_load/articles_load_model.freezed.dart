@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'articles_load_model.dart';
 
@@ -21,6 +21,7 @@ mixin _$ArticlesLoadModel {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get hasReachedMax => throw _privateConstructorUsedError;
   bool get hasError => throw _privateConstructorUsedError;
+  Object? get error => throw _privateConstructorUsedError;
   List<ArticleQuickInfoModel> get articles =>
       throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $ArticlesLoadModelCopyWith<$Res> {
       bool isLoading,
       bool hasReachedMax,
       bool hasError,
+      Object? error,
       List<ArticleQuickInfoModel> articles});
 }
 
@@ -62,6 +64,7 @@ class _$ArticlesLoadModelCopyWithImpl<$Res, $Val extends ArticlesLoadModel>
     Object? isLoading = null,
     Object? hasReachedMax = null,
     Object? hasError = null,
+    Object? error = freezed,
     Object? articles = null,
   }) {
     return _then(_value.copyWith(
@@ -85,6 +88,7 @@ class _$ArticlesLoadModelCopyWithImpl<$Res, $Val extends ArticlesLoadModel>
           ? _value.hasError
           : hasError // ignore: cast_nullable_to_non_nullable
               as bool,
+      error: freezed == error ? _value.error : error,
       articles: null == articles
           ? _value.articles
           : articles // ignore: cast_nullable_to_non_nullable
@@ -107,6 +111,7 @@ abstract class _$$_ArticlesLoadModelCopyWith<$Res>
       bool isLoading,
       bool hasReachedMax,
       bool hasError,
+      Object? error,
       List<ArticleQuickInfoModel> articles});
 }
 
@@ -126,6 +131,7 @@ class __$$_ArticlesLoadModelCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? hasReachedMax = null,
     Object? hasError = null,
+    Object? error = freezed,
     Object? articles = null,
   }) {
     return _then(_$_ArticlesLoadModel(
@@ -149,6 +155,7 @@ class __$$_ArticlesLoadModelCopyWithImpl<$Res>
           ? _value.hasError
           : hasError // ignore: cast_nullable_to_non_nullable
               as bool,
+      error: freezed == error ? _value.error : error,
       articles: null == articles
           ? _value._articles
           : articles // ignore: cast_nullable_to_non_nullable
@@ -166,6 +173,7 @@ class _$_ArticlesLoadModel implements _ArticlesLoadModel {
       this.isLoading = false,
       this.hasReachedMax = false,
       this.hasError = false,
+      this.error,
       final List<ArticleQuickInfoModel> articles = const []})
       : _articles = articles;
 
@@ -183,17 +191,20 @@ class _$_ArticlesLoadModel implements _ArticlesLoadModel {
   @override
   @JsonKey()
   final bool hasError;
+  @override
+  final Object? error;
   final List<ArticleQuickInfoModel> _articles;
   @override
   @JsonKey()
   List<ArticleQuickInfoModel> get articles {
+    if (_articles is EqualUnmodifiableListView) return _articles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_articles);
   }
 
   @override
   String toString() {
-    return 'ArticlesLoadModel(type: $type, page: $page, isLoading: $isLoading, hasReachedMax: $hasReachedMax, hasError: $hasError, articles: $articles)';
+    return 'ArticlesLoadModel(type: $type, page: $page, isLoading: $isLoading, hasReachedMax: $hasReachedMax, hasError: $hasError, error: $error, articles: $articles)';
   }
 
   @override
@@ -209,12 +220,20 @@ class _$_ArticlesLoadModel implements _ArticlesLoadModel {
                 other.hasReachedMax == hasReachedMax) &&
             (identical(other.hasError, hasError) ||
                 other.hasError == hasError) &&
+            const DeepCollectionEquality().equals(other.error, error) &&
             const DeepCollectionEquality().equals(other._articles, _articles));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, page, isLoading,
-      hasReachedMax, hasError, const DeepCollectionEquality().hash(_articles));
+  int get hashCode => Object.hash(
+      runtimeType,
+      type,
+      page,
+      isLoading,
+      hasReachedMax,
+      hasError,
+      const DeepCollectionEquality().hash(error),
+      const DeepCollectionEquality().hash(_articles));
 
   @JsonKey(ignore: true)
   @override
@@ -231,6 +250,7 @@ abstract class _ArticlesLoadModel implements ArticlesLoadModel {
       final bool isLoading,
       final bool hasReachedMax,
       final bool hasError,
+      final Object? error,
       final List<ArticleQuickInfoModel> articles}) = _$_ArticlesLoadModel;
 
   @override
@@ -243,6 +263,8 @@ abstract class _ArticlesLoadModel implements ArticlesLoadModel {
   bool get hasReachedMax;
   @override
   bool get hasError;
+  @override
+  Object? get error;
   @override
   List<ArticleQuickInfoModel> get articles;
   @override
