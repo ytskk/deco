@@ -72,6 +72,22 @@ class DriftArticlesDao extends DatabaseAccessor<DriftDataStore>
     return _joinArticlesWithAuthor(articleQuery);
   }
 
+  @override
+  Stream<List<ArticleWithAuthorModel>> allReadArticles() {
+    final articleQuery = _buildArticleWithAuthorQuery()
+      ..where(articles.isRead.equals(true));
+
+    return _joinArticlesWithAuthor(articleQuery);
+  }
+
+  @override
+  Stream<List<ArticleWithAuthorModel>> allUnreadArticles() {
+    final articleQuery = _buildArticleWithAuthorQuery()
+      ..where(articles.isRead.equals(false));
+
+    return _joinArticlesWithAuthor(articleQuery);
+  }
+
   Future<List<ArticleWithAuthorModel>> allSavedArticlesList() async {
     final articleQuery = _buildArticleWithAuthorQuery();
 

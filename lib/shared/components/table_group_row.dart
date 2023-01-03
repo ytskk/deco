@@ -63,6 +63,9 @@ class TableGroupRow extends StatelessWidget {
 
     return ListTile(
       leading: leading,
+      minLeadingWidth: 0,
+      dense: true,
+      horizontalTitleGap: 8,
       title: _buildTitleChild(title, theme),
       subtitle: _buildSubtitleChild(subtitle, theme),
       trailing: _buildTrailingChild(trailing, theme),

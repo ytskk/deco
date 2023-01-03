@@ -28,6 +28,7 @@ class TableGroup extends ConsumerWidget {
             const SizedBox(height: 4),
           ],
           Card(
+            margin: EdgeInsets.zero,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: separate ? _separateChildren(children) : children,

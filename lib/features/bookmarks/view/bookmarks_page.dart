@@ -25,6 +25,7 @@ class BookmarksPage extends StatelessWidget {
               );
             },
           ),
+          // DEBUG
           Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
               final database = ref.watch(dataStoreProvider);

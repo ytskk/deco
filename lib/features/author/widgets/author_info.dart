@@ -17,13 +17,15 @@ class AuthorInfo extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: SelectionArea(
+          if (author.summary != null ||
+              author.story != null ||
+              author.tagLine != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -54,7 +56,6 @@ class AuthorInfo extends StatelessWidget {
                 ],
               ),
             ),
-          ),
           Wrap(
             spacing: 8,
             children: [

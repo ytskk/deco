@@ -22,6 +22,12 @@ abstract class ArticlesDataStoreInterface {
   /// and read status.
   Stream<List<ArticleWithAuthorModel>> allSavedArticles();
 
+  /// Return all saved and read articles in db.
+  Stream<List<ArticleWithAuthorModel>> allReadArticles();
+
+  /// Return all saved and unread articles in db.
+  Stream<List<ArticleWithAuthorModel>> allUnreadArticles();
+
   /// Return all saved articles in db. Article data with content (in MD)
   /// and read status.
   Future<List<ArticleWithAuthorModel>> allSavedArticlesList();
@@ -44,7 +50,8 @@ abstract class ArticlesDataStoreInterface {
   /// Returns future of all saved articles for user with provided [userId].
   Future<int> getUserArticlesCount(int userId);
 
-  /// Returns stream of all saved articles for user with provided [organizationId].
+  /// Returns stream of all saved articles for organization with provided
+  /// [organizationId].
   Future<int> getOrganizationArticlesCount(String organizationId);
 
   // UPDATE

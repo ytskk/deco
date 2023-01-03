@@ -14,4 +14,5 @@ abstract class PathNames {
   static const String articleByPath = 'path';
   static const String articleById = 'id';
   static const String bookmarks = '/bookmarks';
+  static const String bookmarksType = 'bookmarkType';
 }
