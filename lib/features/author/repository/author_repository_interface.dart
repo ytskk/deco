@@ -3,7 +3,7 @@ import 'package:dev_community/features/author/author.dart';
 
 abstract class AuthorRepositoryInterface {
   Future<AuthorInfoModel> getAuthorByUsername(String username);
-  Future<List<ArticleCardModel>> getArticlesByUsername({
+  Future<List<ArticleQuickInfoModel>> getArticlesByUsername({
     required String username,
     int page = 1,
     bool isOrganization = false,

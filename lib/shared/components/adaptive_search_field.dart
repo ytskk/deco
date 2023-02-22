@@ -21,7 +21,8 @@ class AdaptiveSearchField extends StatefulWidget {
   State<AdaptiveSearchField> createState() => _AdaptiveSearchFieldState();
 }
 
-class _AdaptiveSearchFieldState extends State<AdaptiveSearchField> {
+class _AdaptiveSearchFieldState extends State<AdaptiveSearchField>
+    with AutomaticKeepAliveClientMixin {
   late final TextEditingController _controller;
   late final FocusNode _focusNode;
 
@@ -39,6 +40,7 @@ class _AdaptiveSearchFieldState extends State<AdaptiveSearchField> {
     _focusNode.dispose();
 
     super.dispose();
+    log('adaptive search field disposed');
   }
 
   @override
@@ -57,6 +59,9 @@ class _AdaptiveSearchFieldState extends State<AdaptiveSearchField> {
       focusNode: _focusNode,
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _CupertinoTextField extends StatelessWidget {

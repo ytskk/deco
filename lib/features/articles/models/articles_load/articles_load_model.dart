@@ -10,6 +10,8 @@ class ArticlesLoadModel with _$ArticlesLoadModel {
     @Default(0) int page,
     @Default(false) bool isLoading,
     @Default(false) bool hasReachedMax,
-    @Default([]) List<ArticleCardModel> articles,
+    @Default(false) bool hasError,
+    Object? error,
+    @Default([]) List<ArticleQuickInfoModel> articles,
   }) = _ArticlesLoadModel;
 }

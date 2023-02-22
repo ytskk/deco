@@ -24,14 +24,14 @@ class ArticleAuthors extends StatelessWidget {
           endIndent: 16,
           thickness: 1,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 8),
         PaddedTitle(
           title: organization != null
               ? AppStrings.articleDetailsInfoAuthorsTitle
               : AppStrings.articleDetailsInfoAuthorTitle,
-          style: Theme.of(context).textTheme.bodyLarge?.semibold,
+          style: Theme.of(context).textTheme.displaySmall?.semibold,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         _AuthorRow(
           title: author.name,
           imageUrl: author.profileImage,
@@ -79,12 +79,17 @@ class _AuthorRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ListTile(
       leading: AccountAvatar(
         url: imageUrl,
         accountName: username,
       ),
-      title: Text(title),
+      title: Text(
+        title,
+        style: theme.textTheme.bodyLarge!.semibold,
+      ),
       onTap: onPressed,
       trailing: const Icon(Icons.arrow_forward_ios),
     );

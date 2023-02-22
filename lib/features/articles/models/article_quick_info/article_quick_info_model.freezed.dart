@@ -1,9 +1,9 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'article_card_model.dart';
+part of 'article_quick_info_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,13 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ArticleCardModel _$ArticleCardModelFromJson(Map<String, dynamic> json) {
-  return _ArticleCardModel.fromJson(json);
+ArticleQuickInfoModel _$ArticleQuickInfoModelFromJson(
+    Map<String, dynamic> json) {
+  return _ArticleQuickInfoModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ArticleCardModel {
+mixin _$ArticleQuickInfoModel {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
@@ -53,15 +54,15 @@ mixin _$ArticleCardModel {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ArticleCardModelCopyWith<ArticleCardModel> get copyWith =>
+  $ArticleQuickInfoModelCopyWith<ArticleQuickInfoModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ArticleCardModelCopyWith<$Res> {
-  factory $ArticleCardModelCopyWith(
-          ArticleCardModel value, $Res Function(ArticleCardModel) then) =
-      _$ArticleCardModelCopyWithImpl<$Res, ArticleCardModel>;
+abstract class $ArticleQuickInfoModelCopyWith<$Res> {
+  factory $ArticleQuickInfoModelCopyWith(ArticleQuickInfoModel value,
+          $Res Function(ArticleQuickInfoModel) then) =
+      _$ArticleQuickInfoModelCopyWithImpl<$Res, ArticleQuickInfoModel>;
   @useResult
   $Res call(
       {int id,
@@ -88,9 +89,10 @@ abstract class $ArticleCardModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ArticleCardModelCopyWithImpl<$Res, $Val extends ArticleCardModel>
-    implements $ArticleCardModelCopyWith<$Res> {
-  _$ArticleCardModelCopyWithImpl(this._value, this._then);
+class _$ArticleQuickInfoModelCopyWithImpl<$Res,
+        $Val extends ArticleQuickInfoModel>
+    implements $ArticleQuickInfoModelCopyWith<$Res> {
+  _$ArticleQuickInfoModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -218,11 +220,11 @@ class _$ArticleCardModelCopyWithImpl<$Res, $Val extends ArticleCardModel>
 }
 
 /// @nodoc
-abstract class _$$_ArticleCardModelCopyWith<$Res>
-    implements $ArticleCardModelCopyWith<$Res> {
-  factory _$$_ArticleCardModelCopyWith(
-          _$_ArticleCardModel value, $Res Function(_$_ArticleCardModel) then) =
-      __$$_ArticleCardModelCopyWithImpl<$Res>;
+abstract class _$$_ArticleQuickInfoModelCopyWith<$Res>
+    implements $ArticleQuickInfoModelCopyWith<$Res> {
+  factory _$$_ArticleQuickInfoModelCopyWith(_$_ArticleQuickInfoModel value,
+          $Res Function(_$_ArticleQuickInfoModel) then) =
+      __$$_ArticleQuickInfoModelCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -252,11 +254,11 @@ abstract class _$$_ArticleCardModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ArticleCardModelCopyWithImpl<$Res>
-    extends _$ArticleCardModelCopyWithImpl<$Res, _$_ArticleCardModel>
-    implements _$$_ArticleCardModelCopyWith<$Res> {
-  __$$_ArticleCardModelCopyWithImpl(
-      _$_ArticleCardModel _value, $Res Function(_$_ArticleCardModel) _then)
+class __$$_ArticleQuickInfoModelCopyWithImpl<$Res>
+    extends _$ArticleQuickInfoModelCopyWithImpl<$Res, _$_ArticleQuickInfoModel>
+    implements _$$_ArticleQuickInfoModelCopyWith<$Res> {
+  __$$_ArticleQuickInfoModelCopyWithImpl(_$_ArticleQuickInfoModel _value,
+      $Res Function(_$_ArticleQuickInfoModel) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -281,7 +283,7 @@ class __$$_ArticleCardModelCopyWithImpl<$Res>
     Object? user = null,
     Object? organization = freezed,
   }) {
-    return _then(_$_ArticleCardModel(
+    return _then(_$_ArticleQuickInfoModel(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -360,8 +362,8 @@ class __$$_ArticleCardModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ArticleCardModel implements _ArticleCardModel {
-  const _$_ArticleCardModel(
+class _$_ArticleQuickInfoModel implements _ArticleQuickInfoModel {
+  const _$_ArticleQuickInfoModel(
       {required this.id,
       required this.title,
       required this.description,
@@ -393,8 +395,8 @@ class _$_ArticleCardModel implements _ArticleCardModel {
       this.organization})
       : _tags = tags;
 
-  factory _$_ArticleCardModel.fromJson(Map<String, dynamic> json) =>
-      _$$_ArticleCardModelFromJson(json);
+  factory _$_ArticleQuickInfoModel.fromJson(Map<String, dynamic> json) =>
+      _$$_ArticleQuickInfoModelFromJson(json);
 
   @override
   final int id;
@@ -441,6 +443,7 @@ class _$_ArticleCardModel implements _ArticleCardModel {
   List<String>? get tags {
     final value = _tags;
     if (value == null) return null;
+    if (_tags is EqualUnmodifiableListView) return _tags;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -453,14 +456,14 @@ class _$_ArticleCardModel implements _ArticleCardModel {
 
   @override
   String toString() {
-    return 'ArticleCardModel(id: $id, title: $title, description: $description, readablePublishDate: $readablePublishDate, url: $url, slug: $slug, path: $path, commentsCount: $commentsCount, publicReactionsCount: $publicReactionsCount, collectionId: $collectionId, positiveReactionsCount: $positiveReactionsCount, coverImage: $coverImage, canonicalUrl: $canonicalUrl, createdAt: $createdAt, readingTimeMinutes: $readingTimeMinutes, tags: $tags, user: $user, organization: $organization)';
+    return 'ArticleQuickInfoModel(id: $id, title: $title, description: $description, readablePublishDate: $readablePublishDate, url: $url, slug: $slug, path: $path, commentsCount: $commentsCount, publicReactionsCount: $publicReactionsCount, collectionId: $collectionId, positiveReactionsCount: $positiveReactionsCount, coverImage: $coverImage, canonicalUrl: $canonicalUrl, createdAt: $createdAt, readingTimeMinutes: $readingTimeMinutes, tags: $tags, user: $user, organization: $organization)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ArticleCardModel &&
+            other is _$_ArticleQuickInfoModel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
@@ -518,51 +521,53 @@ class _$_ArticleCardModel implements _ArticleCardModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ArticleCardModelCopyWith<_$_ArticleCardModel> get copyWith =>
-      __$$_ArticleCardModelCopyWithImpl<_$_ArticleCardModel>(this, _$identity);
+  _$$_ArticleQuickInfoModelCopyWith<_$_ArticleQuickInfoModel> get copyWith =>
+      __$$_ArticleQuickInfoModelCopyWithImpl<_$_ArticleQuickInfoModel>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ArticleCardModelToJson(
+    return _$$_ArticleQuickInfoModelToJson(
       this,
     );
   }
 }
 
-abstract class _ArticleCardModel implements ArticleCardModel {
-  const factory _ArticleCardModel(
-      {required final int id,
-      required final String title,
-      required final String description,
-      @JsonKey(name: 'readable_publish_date')
-          required final String readablePublishDate,
-      required final String url,
-      required final String slug,
-      required final String path,
-      @JsonKey(name: 'comments_count')
-          required final int commentsCount,
-      @JsonKey(name: 'public_reactions_count')
-          required final int publicReactionsCount,
-      @JsonKey(name: 'collection_id')
-          final int? collectionId,
-      @JsonKey(name: 'positive_reactions_count')
-          required final int positiveReactionsCount,
-      @JsonKey(name: 'cover_image')
-          final String? coverImage,
-      @JsonKey(name: 'canonical_url')
-          final String? canonicalUrl,
-      @JsonKey(name: 'created_at')
-          required final DateTime createdAt,
-      @JsonKey(name: 'reading_time_minutes')
-          required final int readingTimeMinutes,
-      @JsonKey(name: 'tag_list')
-          final List<String>? tags,
-      @JsonKey(name: 'user')
-          required final UserQuickInfoModel user,
-      final OrganizationQuickInfoModel? organization}) = _$_ArticleCardModel;
+abstract class _ArticleQuickInfoModel implements ArticleQuickInfoModel {
+  const factory _ArticleQuickInfoModel(
+          {required final int id,
+          required final String title,
+          required final String description,
+          @JsonKey(name: 'readable_publish_date')
+              required final String readablePublishDate,
+          required final String url,
+          required final String slug,
+          required final String path,
+          @JsonKey(name: 'comments_count')
+              required final int commentsCount,
+          @JsonKey(name: 'public_reactions_count')
+              required final int publicReactionsCount,
+          @JsonKey(name: 'collection_id')
+              final int? collectionId,
+          @JsonKey(name: 'positive_reactions_count')
+              required final int positiveReactionsCount,
+          @JsonKey(name: 'cover_image')
+              final String? coverImage,
+          @JsonKey(name: 'canonical_url')
+              final String? canonicalUrl,
+          @JsonKey(name: 'created_at')
+              required final DateTime createdAt,
+          @JsonKey(name: 'reading_time_minutes')
+              required final int readingTimeMinutes,
+          @JsonKey(name: 'tag_list')
+              final List<String>? tags,
+          @JsonKey(name: 'user')
+              required final UserQuickInfoModel user,
+          final OrganizationQuickInfoModel? organization}) =
+      _$_ArticleQuickInfoModel;
 
-  factory _ArticleCardModel.fromJson(Map<String, dynamic> json) =
-      _$_ArticleCardModel.fromJson;
+  factory _ArticleQuickInfoModel.fromJson(Map<String, dynamic> json) =
+      _$_ArticleQuickInfoModel.fromJson;
 
   @override
   int get id;
@@ -613,6 +618,6 @@ abstract class _ArticleCardModel implements ArticleCardModel {
   OrganizationQuickInfoModel? get organization;
   @override
   @JsonKey(ignore: true)
-  _$$_ArticleCardModelCopyWith<_$_ArticleCardModel> get copyWith =>
+  _$$_ArticleQuickInfoModelCopyWith<_$_ArticleQuickInfoModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

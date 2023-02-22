@@ -1,3 +1,4 @@
+import 'package:data_store/data_store.dart';
 import 'package:dev_community/app.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,14 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
 
+  // init data store
+  final dataStore = DriftDataStore();
+
   runApp(
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        dataStoreProvider.overrideWithValue(dataStore),
       ],
       child: const App(),
     ),

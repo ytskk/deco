@@ -1,4 +1,4 @@
-package me.yatsuk.theme_template
+package me.yatsuk.deco
 
 import io.flutter.embedding.android.FlutterActivity
 

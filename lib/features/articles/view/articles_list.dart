@@ -1,105 +1,88 @@
 import 'dart:developer';
 
+import 'package:dev_community/constants/constants.dart';
 import 'package:dev_community/features/articles/articles.dart';
+import 'package:dev_community/features/bookmarks/widgets/bookmark_button.dart';
 import 'package:dev_community/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:very_good_infinite_list/very_good_infinite_list.dart';
 
-final articleListStateProvider =
-    StateProvider.family<ArticlesLoadModel, String>(
-  (ref, type) {
-    return ArticlesLoadModel(type: type);
-  },
-);
+final articlesListProvider = NotifierProviderFamily<
+    ArticlesNotifier,
+    LoadingDataModel<List<ArticleQuickInfoModel>>,
+    String>(ArticlesNotifier.new);
 
-class ArticlesList extends ConsumerStatefulWidget {
+class ArticlesList extends StatelessWidget {
   const ArticlesList({
     super.key,
     required this.type,
+    this.spacing = Spacing.medium,
   });
 
   final String type;
+  final Spacing spacing;
 
-  @override
-  ConsumerState createState() => _ArticlesListState();
-}
-
-class _ArticlesListState extends ConsumerState<ArticlesList> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        final state = ref.watch(articleListStateProvider(widget.type));
+        final articles = ref.watch(articlesListProvider(type));
 
         return RefreshIndicator(
-          onRefresh: () async {
-            await _loadPage(1);
+          onRefresh: () {
+            return ref.read(articlesListProvider(type).notifier).refresh();
           },
           child: InfiniteList(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 24,
+            padding: EdgeInsets.only(
+              top: spacing.value,
+              left: 8,
+              right: 8,
+              bottom: spacing.value,
             ),
-            isLoading: state.isLoading,
-            itemCount: state.articles.length,
-            hasReachedMax: state.hasReachedMax,
-            onFetchData: () async {
-              await _loadPage(state.page + 1);
+            isLoading: articles.isLoading,
+            hasError: articles.hasError,
+            hasReachedMax: articles.hasReachedMax,
+            itemCount: articles.data?.length ?? 0,
+            onFetchData: () {
+              ref.read(articlesListProvider(type).notifier).loadNextPage();
             },
-            loadingBuilder: (context) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            },
-            itemBuilder: (BuildContext context, int index) {
-              return ArticleCardAlternative(
-                article: state.articles.elementAt(index),
+            loadingBuilder: (_) => const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+            emptyBuilder: (context) => const Center(
+              child: Text(
+                'No articles found',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            itemBuilder: (context, index) {
+              final article = articles.data?[index];
+
+              return ArticleCard(
+                article: ArticleConverter.articleQuickInfoToArticleCardModel(
+                    article!),
                 onPressed: () {
-                  final article = state.articles.elementAt(index);
-                  context.pushNamedArticleByPath(
-                    article.path,
-                    extra: state.articles.elementAt(index),
-                  );
+                  context.pushNamedArticleByPath(article.path);
                 },
+                bookmarkBuilder: (context, articleId, articlePath) =>
+                    BookmarkButton(
+                  articleId: articleId,
+                  articlePath: articlePath,
+                ),
               );
             },
+            errorBuilder: (context) => Center(
+              child: Text(
+                'Something went wrong: ${articles.error}',
+              ),
+            ),
           ),
         );
       },
     );
-  }
-
-  /// BUG: Loads next page on every opening page. May calls onFetchData
-  /// every time the widget is created.
-  Future<void> _loadPage(int page) async {
-    try {
-      ref.read(articleListStateProvider(widget.type).state).update(
-            (state) => state.copyWith(isLoading: true),
-          );
-
-      final articles = await ref.read(articlesRepositoryProvider).getArticles(
-            type: widget.type,
-            page: page,
-          );
-
-      ref.read(articleListStateProvider(widget.type).state).update(
-        (state) {
-          final newArticles =
-              page == 1 ? articles : [...state.articles, ...articles];
-
-          return state.copyWith(
-            page: page,
-            articles: newArticles,
-            isLoading: false,
-            // TODO: in case if article per page will be changed.
-            // Change in organization articles too.
-            hasReachedMax: articles.length < 30,
-          );
-        },
-      );
-    } catch (error) {
-      log('error: $error');
-    }
   }
 }

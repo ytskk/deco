@@ -20,7 +20,7 @@ class TableGroupRow extends StatelessWidget {
   Widget? _buildTitleChild(Widget? title, ThemeData theme) {
     if (title != null) {
       return DefaultTextStyle(
-        style: theme.textTheme.bodyLarge!,
+        style: theme.textTheme.bodyMedium!,
         child: title,
       );
     }
@@ -63,6 +63,9 @@ class TableGroupRow extends StatelessWidget {
 
     return ListTile(
       leading: leading,
+      minLeadingWidth: 0,
+      dense: true,
+      horizontalTitleGap: 8,
       title: _buildTitleChild(title, theme),
       subtitle: _buildSubtitleChild(subtitle, theme),
       trailing: _buildTrailingChild(trailing, theme),

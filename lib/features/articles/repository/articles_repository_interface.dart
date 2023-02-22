@@ -1,16 +1,19 @@
 import 'package:dev_community/features/features.dart';
 
 abstract class ArticlesRepositoryInterface {
-  Future<List<ArticleCardModel>> getArticles({
+  /// Returns articles list.
+  ///
+  /// Fetches for provided [type] (popular, latest or tag name) on [page].
+  Future<List<ArticleQuickInfoModel>> getArticles({
     int page = 1,
     String type,
   });
 
   Future<ArticleDetailsModel> getArticleDetails({
-    required String slug,
+    required String path,
   });
 
-  Future<ArticleCardModel> getArticleCard({
+  Future<ArticleQuickInfoModel> getArticleCard({
     required String slug,
   });
 }

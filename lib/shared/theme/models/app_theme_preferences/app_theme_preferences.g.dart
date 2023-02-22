@@ -29,7 +29,7 @@ const _$ThemeModeEnumMap = {
 };
 
 const _$AppStyleTypeEnumMap = {
-  AppStyleType.standard: 'standard',
+  AppStyleType.deco: 'deco',
   AppStyleType.devto: 'devto',
   AppStyleType.reddish: 'reddish',
 };

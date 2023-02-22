@@ -64,32 +64,49 @@ class RemoteAuthorRepository implements AuthorRepositoryInterface {
   }
 
   @override
-  Future<List<ArticleCardModel>> getArticlesByUsername({
+  Future<List<ArticleQuickInfoModel>> getArticlesByUsername({
     required String username,
     int page = 1,
     bool isOrganization = false,
   }) async {
-    final requestConfiguration = _generateRequestParams(
-      username: username,
-      page: page,
-      isOrganization: isOrganization,
-    );
-    log(
-      'articles: ',
-      name: 'RemoteAuthorRepository.getArticlesByUsername',
-    );
-
     final res = await _dio.get(
-      requestConfiguration['path'] as String,
-      queryParameters:
-          requestConfiguration['queryParameters'] as Map<String, dynamic>,
+      ApiConstants.articles,
+      queryParameters: {
+        'username': username,
+        'page': page,
+      },
     );
 
     final articles = res.data as List;
 
     return articles
-        .map((e) => ArticleCardModel.fromJson(e as Map<String, dynamic>))
+        .map(
+          (article) => ArticleQuickInfoModel.fromJson(
+            article as Map<String, dynamic>,
+          ),
+        )
         .toList();
+    // final requestConfiguration = _generateRequestParams(
+    //   username: username,
+    //   page: page,
+    //   isOrganization: isOrganization,
+    // );
+    // log(
+    //   'articles: ',
+    //   name: 'RemoteAuthorRepository.getArticlesByUsername',
+    // );
+
+    // final res = await _dio.get(
+    //   requestConfiguration['path'] as String,
+    //   queryParameters:
+    //       requestConfiguration['queryParameters'] as Map<String, dynamic>,
+    // );
+
+    // final articles = res.data as List;
+
+    // return articles
+    //     .map((e) => ArticleQuickInfoModel.fromJson(e as Map<String, dynamic>))
+    //     .toList();
   }
 
   @override

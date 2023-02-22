@@ -1,5 +1,5 @@
 name: dev_community
-description: Dev Flutter app. Enjoy!
+description: DECO — Unofficial DEV Community Flutter App.
 
 publish_to: "none"
 
@@ -14,49 +14,108 @@ dependencies:
 
   cupertino_icons: ^1.0.5
   very_good_analysis: ^3.1.0
-  flutter_riverpod: ^2.0.2
+  flutter_riverpod: ^2.1.1
   shared_preferences: ^2.0.15
   freezed_annotation: ^2.2.0
   json_annotation: ^4.7.0
-  go_router: ^5.1.1
+  go_router: ^6.0.0
   dio: ^4.0.6
-  cached_network_image: ^3.2.2
+  cached_network_image: ^3.2.3
 
   jiffy: ^5.0.0
   intl: ^0.17.0
 
   infinite_scroll_pagination: ^3.2.0
-  very_good_infinite_list: ^0.6.0+1
+  very_good_infinite_list: ^0.7.0
 
   scrolls_to_top: ^2.0.0
   scroll_to_index: ^3.0.1
-  url_launcher: ^6.1.6
+  url_launcher: ^6.1.7
 
-  flutter_widget_from_html: ^0.8.5
-  flutter_markdown: ^0.6.12
+  flutter_widget_from_html: ^0.9.0+1
+  flutter_markdown: ^0.6.13
 
   flutter_highlight: ^0.7.0
 
-  flutter_svg: ^1.1.5
+  flutter_svg: ^1.1.6
   expandable_text: ^2.3.0
-  share_plus: ^6.2.0
-  pull_down_button: ^0.3.1
+  share_plus: ^6.3.0
+  pull_down_button: ^0.4.1
+
+  rxdart: ^0.27.7
+
+  data_store:
+    path: packages/data_store
+
+  drift_db_viewer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.3.2
-  freezed: ^2.2.0
-  json_serializable: ^6.5.3
+  build_runner: ^2.3.3
+  freezed: ^2.3.2
+  json_serializable: ^6.5.4
 
-  flutter_launcher_icons: ^0.10.0
+  flutter_launcher_icons: ^0.11.0
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/icons/
+
+  fonts:
+    - family: Avenir Next
+      fonts:
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-Regular.otf
+          weight: 400
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-It.otf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-Medium.otf
+          weight: 500
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-MediumIt.otf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-Demi.otf
+          weight: 600
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-DemiIt.otf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-Bold.otf
+          weight: 700
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-BoldIt.otf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-Heavy.otf
+          weight: 900
+        - asset: assets/fonts/avenir_next/AvenirNextLTPro-HeavyIt.otf
+          weight: 900
+          style: italic
+
+    - family: Playfair Display
+      fonts:
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/playfair_display/PlayfairDisplay-BoldItalic.ttf
+          weight: 700
+          style: italic
 
 flutter_icons:
   android: "launcher_icon"

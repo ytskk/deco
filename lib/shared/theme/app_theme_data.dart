@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppThemeData {
   AppThemeData({
-    AppStyleType appStyleType = AppStyleType.standard,
+    AppStyleType appStyleType = AppStyleType.deco,
     AppStyle? style,
   }) : appStyle = style ?? AppStyle.fromType(appStyleType);
 

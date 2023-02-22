@@ -19,6 +19,6 @@ class AppThemePreferences with _$AppThemePreferences {
   factory AppThemePreferences.initial() => const AppThemePreferences(
         useDimColors: false,
         themeMode: ThemeMode.system,
-        appStyleType: AppStyleType.devto,
+        appStyleType: AppStyleType.deco,
       );
 }

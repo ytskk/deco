@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'article_card_model.dart';
+part of 'article_quick_info_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ArticleCardModel _$$_ArticleCardModelFromJson(Map<String, dynamic> json) =>
-    _$_ArticleCardModel(
+_$_ArticleQuickInfoModel _$$_ArticleQuickInfoModelFromJson(
+        Map<String, dynamic> json) =>
+    _$_ArticleQuickInfoModel(
       id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
@@ -33,7 +34,8 @@ _$_ArticleCardModel _$$_ArticleCardModelFromJson(Map<String, dynamic> json) =>
               json['organization'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ArticleCardModelToJson(_$_ArticleCardModel instance) =>
+Map<String, dynamic> _$$_ArticleQuickInfoModelToJson(
+        _$_ArticleQuickInfoModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

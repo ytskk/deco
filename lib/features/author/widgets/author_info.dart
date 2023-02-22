@@ -17,13 +17,15 @@ class AuthorInfo extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: SelectionArea(
+          if (author.summary != null ||
+              author.story != null ||
+              author.tagLine != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -35,6 +37,7 @@ class AuthorInfo extends StatelessWidget {
                   if (author.story != null)
                     ExpandableText(
                       author.story!,
+                      style: theme.textTheme.bodyMedium,
                       expandText: 'More',
                       animation: true,
                       collapseOnTextTap: true,
@@ -46,14 +49,13 @@ class AuthorInfo extends StatelessWidget {
                   if (author.tagLine != null)
                     Text(
                       author.tagLine!,
-                      style: theme.textTheme.labelSmall!.copyWith(
-                        color: theme.colorScheme.tertiary,
+                      style: theme.textTheme.bodySmall!.copyWith(
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                 ],
               ),
             ),
-          ),
           Wrap(
             spacing: 8,
             children: [
@@ -61,14 +63,12 @@ class AuthorInfo extends StatelessWidget {
                 IconLabel(
                   icon: Icons.location_on_outlined,
                   label: author.location!,
-                  style: theme.textTheme.labelSmall,
-                  spacing: 2,
+                  style: theme.textTheme.labelMedium,
                 ),
               IconLabel(
                 icon: Icons.calendar_month_rounded,
                 label: '${AppStrings.authorInfoJoined} ${author.joinedAt}',
-                style: theme.textTheme.labelSmall,
-                spacing: 2,
+                style: theme.textTheme.labelMedium,
               ),
             ],
           ),

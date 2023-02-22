@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'dart:math' as math;
 
-import 'package:dev_community/features/author/author.dart';
-import 'package:dev_community/features/author/view/author_articles_list.dart';
 import 'package:dev_community/features/features.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -25,48 +25,32 @@ final articleBodyProvider =
     FutureProvider.family<ArticleDetailsModel, String>((ref, slug) async {
   final repository = ref.read(articlesRepositoryProvider);
 
-  return repository.getArticleDetails(slug: slug);
+  return repository.getArticleDetails(path: slug);
 });
 
 class ArticleBody extends StatelessWidget {
   const ArticleBody({
     super.key,
-    required this.slug,
+    required this.articleDetails,
     required this.scrollController,
   });
 
-  final String slug;
+  final ArticleDetailsModel articleDetails;
   final AutoScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        final articleBody = ref.watch(articleBodyProvider(slug));
+        final isDarkMode =
+            ref.watch(appThemePreferencesProvider.notifier).isDarkMode();
 
-        return articleBody.when(
-          data: (ArticleDetailsModel data) {
-            // Change article code block theme based on app theme.
-            final isDarkMode =
-                ref.watch(appThemePreferencesProvider.notifier).isDarkMode();
+        final html = _buildHtml(articleDetails.bodyMarkdown);
 
-            final html = _buildHtml(data.bodyMarkdown);
-
-            return _ArticleBody(
-              articleDetailsModel: data,
-              scrollController: scrollController,
-              html: html,
-              isDarkMode: isDarkMode,
-            );
-          },
-          error: (Object error, StackTrace stackTrace) {
-            return Center(
-              child: Text('Error: $error'),
-            );
-          },
-          loading: () {
-            return const Center(child: CircularProgressIndicator.adaptive());
-          },
+        return _ArticleBody(
+          scrollController: scrollController,
+          html: html,
+          isDarkMode: isDarkMode,
         );
       },
     );
@@ -87,7 +71,7 @@ class ArticleBody extends StatelessWidget {
           .map((e) => e.text.toCapitalized())
           .toList();
 
-      log('tOC: ${ref.read(tableOfContentsProvider(slug))}');
+      // log('tOC: ${ref.read(tableOfContentsProvider(slug))}');
       // ref
       //     .read(tableOfContentsProvider(slug).state)
       //     .update((state) => state.copyWithNewValuesTo(element, heading));
@@ -112,7 +96,7 @@ class ArticleBody extends StatelessWidget {
       return markdown;
     }
 
-    if (markdown.substring(0, 3) == '---') {
+    if (markdown.trim().substring(0, 3) == '---') {
       final index = markdown.indexOf('---', 3);
       return markdown.substring(index + 3);
     }
@@ -123,19 +107,19 @@ class ArticleBody extends StatelessWidget {
 
 class _ArticleBody extends StatelessWidget {
   const _ArticleBody({
-    required this.articleDetailsModel,
     required this.scrollController,
     required this.html,
     required this.isDarkMode,
   });
 
-  final ArticleDetailsModel articleDetailsModel;
   final AutoScrollController scrollController;
   final String html;
   final bool isDarkMode;
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: HtmlWidget(
@@ -159,14 +143,6 @@ class _ArticleBody extends StatelessWidget {
           );
         },
         customStylesBuilder: (element) {
-          if (element.localName!.contains('h2')) {
-            return {
-              'font-size': '32px',
-              'line-height': '40px',
-              'font-weight': 'bold',
-            };
-          }
-
           // If there is a link refers to the same site
           if (element.localName!.contains('a')) {
             final href = element.attributes['href'];
@@ -182,11 +158,14 @@ class _ArticleBody extends StatelessWidget {
           return null;
         },
         customWidgetBuilder: (element) {
-          _tagHeadings(element);
           if (element.localName == 'hr') {
-            return const Divider(
-              thickness: 1,
-            );
+            return const Separator.material();
+            // return Text('This is a divider');
+          }
+
+          // handle headings
+          if (element.localName?.contains('h') == true) {
+            return _tagHeadings(textTheme, element);
           }
 
           final embedRegex = RegExp('{% embed .* %}');
@@ -200,75 +179,35 @@ class _ArticleBody extends StatelessWidget {
             return EmbeddedUrl(url: embeddedUrl);
           }
 
-          /// Handle code block.
+          if (element.localName == 'img') {
+            // log('figure: ${element.parent?.nodes}');
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: generateShadow(),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  element.attributes['src']!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
+            );
+          }
+
+          // Handle code block.
           if (element.localName == 'pre') {
             final theme = Theme.of(context);
             final lang =
                 element.firstChild?.attributes['class']?.split('-').last;
             final codeTheme = isDarkMode ? atomOneDarkTheme : atomOneLightTheme;
 
-            return SizedBox(
-              width: double.infinity,
-              child: Card(
-                color: codeTheme['root']?.backgroundColor,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        if (lang != null)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Text(
-                              lang,
-                              style:
-                                  theme.textTheme.labelSmall!.medium.secondary,
-                            ),
-                          ),
-                        const Spacer(),
-                        CupertinoButton(
-                          // padding: EdgeInsets.zero,
-                          // minSize: 0,
-                          child: Text(
-                            AppStrings.articleDetailsCopy,
-                            style: theme.textTheme.labelMedium!.medium.copyWith(
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
-
-                          /// TODO(me): inject this.
-                          onPressed: () {
-                            Clipboard.setData(
-                              ClipboardData(
-                                text: element.text,
-                              ),
-                            );
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    AppStrings.authorInfoAppBarUsernameCopied),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    // const Separator.adaptive(),
-                    SizedBox(
-                      width: double.infinity,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: HighlightView(
-                          element.text,
-                          language: lang ?? 'auto',
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          theme: codeTheme,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            return CodeBlock(
+              codeTheme: codeTheme,
+              lang: lang,
+              text: element.text,
             );
           }
 
@@ -278,18 +217,126 @@ class _ArticleBody extends StatelessWidget {
     );
   }
 
-  dynamic _tagHeadings(dom.Element element) {
+  Widget? _tagHeadings(TextTheme textTheme, dom.Element element) {
     if (element.localName?.contains('h') == true && element.id.isNotEmpty) {
-      // log('element.localName: ${element.id}');
-      return AutoScrollTag(
-        key: ValueKey(element),
-        controller: scrollController,
-        index: element.text.hashCode,
-        child: Text(
-          element.text.trim(),
+      final headingElement = element.localName!;
+      final headingValue = int.parse(headingElement.substring(1));
+      final headingStyle = _matchTextStyleToHeading(headingElement, textTheme);
+
+      return Padding(
+        padding: EdgeInsets.only(
+          top: 44 / headingValue.toDouble(),
+          bottom: 4,
+        ),
+        child: AutoScrollTag(
+          key: ValueKey(element),
+          controller: scrollController,
+          index: element.text.hashCode,
+          child: Text(
+            element.text.trim(),
+            style: headingStyle,
+            // style: textTheme.,
+          ),
         ),
       );
     }
+    return null;
+  }
+
+  TextStyle? _matchTextStyleToHeading(String heading, TextTheme textTheme) {
+    switch (heading) {
+      case 'h1':
+        return textTheme.displayMedium!.bold;
+      case 'h2':
+        return textTheme.displayMedium!.bold;
+      case 'h3':
+        return textTheme.displaySmall!.bold;
+      case 'h4':
+        return textTheme.displaySmall!.medium;
+      default:
+        return textTheme.displaySmall;
+    }
+  }
+}
+
+class CodeBlock extends StatelessWidget {
+  const CodeBlock({
+    super.key,
+    required this.codeTheme,
+    required this.lang,
+    required this.text,
+  });
+
+  final Map<String, TextStyle> codeTheme;
+  final String? lang;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        color: codeTheme['root']?.backgroundColor,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                if (lang != null)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Text(
+                      lang!,
+                      style: theme.textTheme.labelSmall!.medium.secondary,
+                    ),
+                  ),
+                const Spacer(),
+                CupertinoButton(
+                  // padding: EdgeInsets.zero,
+                  // minSize: 0,
+                  child: Text(
+                    AppStrings.articleDetailsCopy,
+                    style: theme.textTheme.labelMedium!.medium.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+
+                  /// TODO(me): inject this.
+                  onPressed: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: text,
+                      ),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text(AppStrings.authorInfoAppBarUsernameCopied),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            // const Separator.adaptive(),
+            SizedBox(
+              width: double.infinity,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: HighlightView(
+                  text,
+                  language: lang ?? 'auto',
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  theme: codeTheme,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -313,7 +360,7 @@ class EmbeddedUrl extends StatelessWidget {
             future: _fetchEmbeddedUrl(url, articlesRepository),
             builder: (
               BuildContext context,
-              AsyncSnapshot<ArticleCardModel> snapshot,
+              AsyncSnapshot<ArticleQuickInfoModel> snapshot,
             ) {
               if (snapshot.hasData) {
                 final article = snapshot.data!;
@@ -339,23 +386,30 @@ class EmbeddedUrl extends StatelessWidget {
     }
 
     final theme = Theme.of(context);
+    log(
+      'URL can be embedded: $url',
+      name: 'EmbeddedUrl::build',
+    );
 
-    return Text(
-      url,
-      style: theme.textTheme.labelMedium!.medium.copyWith(
-        color: theme.colorScheme.primary,
+    return GestureDetector(
+      onTap: () => launchUrl(Uri.parse(url)),
+      child: Text(
+        url,
+        style: theme.textTheme.labelMedium!.medium.copyWith(
+          color: theme.colorScheme.primary,
+        ),
       ),
     );
   }
 
-  Future<ArticleCardModel> _fetchEmbeddedUrl(
+  Future<ArticleQuickInfoModel> _fetchEmbeddedUrl(
     String embededUrl,
     ArticlesRepositoryInterface articlesRepository,
   ) async {
     final path = embededUrl.substring('https://dev.to'.length);
-    final res = await articlesRepository.getArticleDetails(slug: path);
+    final res = await articlesRepository.getArticleDetails(path: path);
 
-    return ArticleCardModel.fromDetails(res);
+    return ArticleQuickInfoModel.fromDetails(res);
   }
 }
 
@@ -366,7 +420,7 @@ class ArticlePreview extends StatelessWidget {
     this.onTap,
   });
 
-  final ArticleCardModel article;
+  final ArticleQuickInfoModel article;
   final VoidCallback? onTap;
 
   @override

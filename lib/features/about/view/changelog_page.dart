@@ -35,7 +35,7 @@ class ChangelogPage extends StatelessWidget {
                 (BuildContext context, int index) {
                   final item = changelog[index];
                   return Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -68,15 +68,15 @@ class VersionChangesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: item.changes
-            .map(
-              (changeItem) => VersionChangeItem(
-                item: changeItem,
-              ),
-            )
-            .toList(),
+      child: Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: item.changes
+              .map(
+                (changeItem) => VersionChangeItem(item: changeItem),
+              )
+              .toList(),
+        ),
       ),
     );
   }
@@ -94,54 +94,51 @@ class VersionChangeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (item.status != null) ...[
-                // To align with text
-                Padding(
-                  padding: const EdgeInsets.only(top: 3),
-                  child: ChangeItemStatusBadge(status: item.status),
-                ),
-                const SizedBox(width: 8),
-              ],
-              Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (item.status != null) ...[
+              // To align with text
+              Padding(
+                padding: const EdgeInsets.only(top: 3),
+                child: ChangeItemStatusBadge(status: item.status),
+              ),
+              const SizedBox(width: 8),
+            ],
+            Expanded(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     item.name,
                     style: item.content == null
-                        ? theme.textTheme.bodyLarge
-                        : theme.textTheme.bodyLarge!.semibold,
+                        ? theme.textTheme.bodyMedium
+                        : theme.textTheme.bodyMedium!.semibold,
                   ),
-                  if (item.content != null)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 8,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: item.content!
-                            .map(
-                              (changeItem) => Text(
-                                changeItem,
-                                style: theme.textTheme.bodySmall!.secondary,
-                              ),
-                            )
-                            .toList(),
-                      ),
+                  if (item.content != null) ...[
+                    const SizedBox(height: 4),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (final changeItem in item.content!) ...[
+                          Text(
+                            changeItem,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                          const SizedBox(height: 2),
+                        ]
+                      ],
                     ),
+                  ]
                 ],
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

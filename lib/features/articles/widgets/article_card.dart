@@ -1,58 +1,43 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dev_community/constants/app_icons.dart';
 import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/shared.dart';
+import 'package:dev_community/shared/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+typedef BookmarkBuilder = Widget Function(
+  BuildContext context,
+  int articleId,
+  String articlePath,
+);
 
 class ArticleCard extends StatelessWidget {
   const ArticleCard({
     super.key,
     required this.article,
     this.onPressed,
+    this.bookmarkBuilder,
   });
 
   final ArticleCardModel article;
   final VoidCallback? onPressed;
+  final BookmarkBuilder? bookmarkBuilder;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(8),
       child: Card(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (article.coverImage != null)
-              _ArticleCardCoverImage(imageUrl: article.coverImage!),
             _ArticleCardBody(article: article),
+            _ArticleCardBottom(
+              article: article,
+              bookmarkBuilder: bookmarkBuilder,
+            ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ArticleCardCoverImage extends StatelessWidget {
-  const _ArticleCardCoverImage({
-    required this.imageUrl,
-  });
-
-  final String imageUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: 140,
-      errorWidget: (context, url, error) => const Icon(Icons.error),
-      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
-        child: AnimatedOpacity(
-          opacity: downloadProgress.progress ?? 0.0,
-          duration: const Duration(milliseconds: 500),
-          child: CircularProgressIndicator(
-            value: downloadProgress.progress,
-          ),
         ),
       ),
     );
@@ -70,113 +55,139 @@ class _ArticleCardBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _ArticleCardBodyInfo(article: article),
-          Text(
-            article.title,
-            style: theme.textTheme.bodyLarge?.bold,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            article.description,
-            style: theme.textTheme.bodySmall?.secondary,
-          ),
-          const SizedBox(height: 8),
-          _ArticleCardBottomInfo(article: article),
-        ],
-      ),
-    );
-  }
-}
-
-class _ArticleCardBodyInfo extends StatelessWidget {
-  const _ArticleCardBodyInfo({
-    required this.article,
-  });
-
-  final ArticleCardModel article;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Text(
-      StringUtils.joinBy(
-        [
-          _prepareAuthors(),
-          StringUtils.relativeDate(article.createdAt),
-        ],
-        separator: ' • ',
-      ),
-      style: theme.textTheme.labelSmall?.secondary,
-    );
-  }
-
-  String _prepareAuthors() {
-    if (article.organization != null) {
-      return StringUtils.joinBy(
-        [
-          article.user.name,
-          article.organization!.name,
-        ],
-        separator: ' for ',
-      );
-    }
-
-    return article.user.name;
-  }
-}
-
-class _ArticleCardBottomInfo extends StatelessWidget {
-  const _ArticleCardBottomInfo({
-    required this.article,
-  });
-
-  final ArticleCardModel article;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if (article.tags != null) ...[
-          Expanded(
-            child: Text(
-              StringUtils.joinBy(
-                article.tags!,
-                separator: '  ',
-              ),
-              style: theme.textTheme.labelMedium!.copyWith(
-                color: theme.colorScheme.primary,
-              ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  article.authorsString,
+                  style: theme.textTheme.labelLarge!.medium.secondary,
+                ),
+                Text(
+                  article.title,
+                  style: article.isRead
+                      ? theme.textTheme.bodyMedium!.semibold.secondary
+                      : theme.textTheme.bodyMedium!.semibold,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (article.tags != null)
+                  Text(
+                    StringUtils.joinBy(
+                      article.tags!,
+                      separator: '  ',
+                    ),
+                    style: theme.textTheme.labelLarge!.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+              ],
             ),
           ),
-          const SizedBox(width: 8),
-        ],
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconLabel(
-              icon: Icons.favorite_outline_rounded,
-              label: article.positiveReactionsCount.toString(),
-            ),
-            const SizedBox(width: 8),
-            IconLabel(
-              icon: Icons.chat_bubble_outline_rounded,
-              label: article.commentsCount.toString(),
-            ),
-          ],
         ),
+        if (article.coverImage != null)
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 12,
+              right: 12,
+            ),
+            child: _ArticleCardCoverImage(imageUrl: article.coverImage!),
+          ),
       ],
+    );
+  }
+}
+
+class _ArticleCardCoverImage extends StatelessWidget {
+  const _ArticleCardCoverImage({
+    required this.imageUrl,
+  });
+
+  final String imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        cacheKey: imageUrl,
+        fit: BoxFit.cover,
+        width: 80,
+        height: 80,
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+        progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+          child: AnimatedOpacity(
+            opacity: downloadProgress.progress ?? 0.0,
+            duration: const Duration(milliseconds: 500),
+            child: CircularProgressIndicator.adaptive(
+              value: downloadProgress.progress,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ArticleCardBottom extends StatelessWidget {
+  const _ArticleCardBottom({
+    required this.article,
+    this.bookmarkBuilder,
+  });
+
+  final ArticleCardModel article;
+  final BookmarkBuilder? bookmarkBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.labelLarge;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+      child: Row(
+        children: [
+          Text(
+            StringUtils.joinBy(
+              [
+                StringUtils.relativeDate(article.createdAt),
+                '${article.readingTimeMinutes.clampMin(1)} min read',
+              ],
+              separator: ' • ',
+            ),
+            style: textStyle!.medium.secondary,
+          ),
+          const Spacer(),
+          Row(
+            children: [
+              if (bookmarkBuilder != null) ...[
+                bookmarkBuilder!(context, article.id, article.path),
+                const SizedBox(width: 16),
+              ],
+              GestureDetector(
+                onTap: () => _onArticleShare(context),
+                child: IconBox(
+                  assetName: AppIcons.share,
+                  color: textStyle.secondary.color,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _onArticleShare(BuildContext context) async {
+    return shareData(
+      context,
+      article.url,
+      '${article.title} — ${article.authorsString}',
     );
   }
 }

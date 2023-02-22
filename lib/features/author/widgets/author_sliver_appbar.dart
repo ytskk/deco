@@ -28,7 +28,7 @@ class AuthorSliverAppbar extends StatelessWidget {
       surfaceTintColor: theme.colorScheme.surface,
       flexibleSpace: CustomFlexibleSpaceBar(
         collapseMode: CollapseMode.pin,
-        expandedTitleScale: 1.15,
+        expandedTitleScale: 1.35,
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
@@ -39,7 +39,7 @@ class AuthorSliverAppbar extends StatelessWidget {
                 children: [
                   Text(
                     author.name.trim(),
-                    style: theme.textTheme.titleLarge,
+                    style: theme.textTheme.displaySmall!.medium,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -64,8 +64,8 @@ class AuthorSliverAppbar extends StatelessWidget {
                   );
                 },
                 child: Text(
-                  '@${author.username.trim()}',
-                  style: theme.textTheme.labelMedium!.medium.secondary,
+                  author.username.trim(),
+                  style: theme.textTheme.labelLarge!.semibold.secondary,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -86,19 +86,6 @@ class AuthorSliverAppbar extends StatelessWidget {
                 radius: 44,
                 accountName: author.username,
               ),
-              // child: SizedBox(
-              //   height: 100,
-              //   width: 100,
-              //   child: DecoratedBox(
-              //     decoration: BoxDecoration(
-              //       shape: BoxShape.circle,
-              //       image: DecorationImage(
-              //         image: NetworkImage(author.profileImage),
-              //         fit: BoxFit.cover,
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ),
             const SizedBox(height: 84),
           ],

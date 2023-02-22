@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 final GoRouter router = GoRouter(
   initialLocation: PathNames.articles,
   routes: [
+    /// Preference routes.
     AppRoute(
       name: PathNames.preferences,
       path: PathNames.preferences,
@@ -28,11 +29,22 @@ final GoRouter router = GoRouter(
         ),
       ],
     ),
+
+    /// About route.
     AppRoute(
       path: PathNames.about,
       name: PathNames.about,
       builder: (_) => const AboutPage(),
+      routes: [
+        AppRoute(
+          path: PathNames.changelog,
+          name: PathNames.changelog,
+          builder: (_) => const ChangelogPage(),
+        ),
+      ],
     ),
+
+    /// Tags routes.
     AppRoute(
       name: PathNames.tags,
       path: PathNames.tags,
@@ -42,16 +54,26 @@ final GoRouter router = GoRouter(
           path: PathNames.tagsSelect,
           builder: (_) => const TagsSelectionPage(),
         ),
+        AppRoute(
+          name: PathNames.tagsByName,
+          path: ':${PathNames.tagsByName}',
+          builder: (state) {
+            final tagName = state.params[PathNames.tagsByName];
+            return TagArticlesPage(
+              name: tagName!,
+            );
+          },
+        ),
       ],
     ),
-    // articles
+
+    /// Articles routes.
     AppRoute(
       path: PathNames.articles,
       name: PathNames.articles,
       builder: (state) {
         return ArticlesPage(
           key: state.pageKey,
-          // articleType: state.params[PathNames.articlesByType],
         );
       },
       routes: [
@@ -64,28 +86,25 @@ final GoRouter router = GoRouter(
           },
           routes: [
             AppRoute(
-              path: ':${PathNames.articleBySlug}',
-              name: PathNames.articleBySlug,
+              path: ':${PathNames.articleByPath}',
+              name: PathNames.articleByPath,
               builder: (state) {
-                log(
-                  'articleBySlug: ${state.params[PathNames.username]}, ${state.params[PathNames.articleBySlug]}',
-                  name: 'router::build',
-                );
                 return ArticleDetailsPage(
                   key: state.pageKey,
-                  articleSlug: StringUtils.joinBy(
-                    [
-                      state.params[PathNames.username]!,
-                      state.params[PathNames.articleBySlug]!,
-                    ],
-                    separator: '/',
-                  ),
+                  articlePath: state.params[PathNames.articleByPath]!,
                 );
               },
             ),
           ],
         ),
       ],
+    ),
+
+    /// Bookmarks routes.
+    AppRoute(
+      path: PathNames.bookmarks,
+      name: PathNames.bookmarks,
+      builder: (_) => const BookmarksPage(),
     ),
   ],
 )
@@ -143,10 +162,10 @@ extension RouterHelper on BuildContext {
     Object? extra,
   }) {
     GoRouter.of(this).pushNamed(
-      PathNames.articleBySlug,
+      PathNames.articleByPath,
       params: {
-        'username': path.split('/')[1],
-        'slug': path.split('/').last,
+        PathNames.username: path.split('/')[1],
+        PathNames.articleByPath: path,
       },
       extra: extra,
     );

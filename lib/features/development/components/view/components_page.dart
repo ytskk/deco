@@ -1,14 +1,11 @@
 import 'dart:developer';
 
-import 'package:dev_community/constants/app_strings.dart';
 import 'package:dev_community/core/adaptive_widgets/adaptive_builder.dart';
 import 'package:dev_community/core/adaptive_widgets/adaptive_dropdown.dart';
 import 'package:dev_community/features/features.dart';
 import 'package:dev_community/shared/shared.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pull_down_button/pull_down_button.dart';
 
 class ComponentsPage extends StatelessWidget {
   const ComponentsPage({super.key});
@@ -24,28 +21,6 @@ class ComponentsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: [
-          Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final dropdownValue = ref.watch(dropdownProvider);
-
-              return ComponentsColumn(
-                title: AppStrings.componentsArticleCardTitle,
-                description: AppStrings.componentsArticleCardDescription,
-                child: Column(
-                  children: [
-                    ArticleCardAlternative(
-                      article: FakeArticlesRepository.mockArticles().first,
-                      showCoverImage: dropdownValue.index != 0,
-                    ),
-                    ArticleCardAlternative(
-                      article:
-                          FakeArticlesRepository.mockArticles(count: 2).last,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
           ComponentsColumn(
             title: 'Tag',
             child: Wrap(

@@ -13,7 +13,7 @@ class ArticleCardAlternative extends StatelessWidget {
     this.showCoverImage = true,
   });
 
-  final ArticleCardModel article;
+  final ArticleQuickInfoModel article;
   final VoidCallback? onPressed;
   final bool showCoverImage;
 
@@ -45,7 +45,7 @@ class _ArticleBody extends StatelessWidget {
     required this.article,
   });
 
-  final ArticleCardModel article;
+  final ArticleQuickInfoModel article;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class _ArticleOptions extends StatelessWidget {
     required this.article,
   });
 
-  final ArticleCardModel article;
+  final ArticleQuickInfoModel article;
 
   @override
   Widget build(BuildContext context) {
@@ -150,17 +150,14 @@ class _ArticleOptions extends StatelessWidget {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      final box = context.findRenderObject() as RenderBox?;
-                      Share.share(
+                    onTap: () async {
+                      await shareData(
+                        context,
                         article.url,
-                        subject:
-                            '${article.title} by ${StringUtils.prepareAuthors(
+                        '${article.title} by ${StringUtils.prepareAuthors(
                           userName: article.user.username,
                           organizationName: article.organization?.name,
                         )}',
-                        sharePositionOrigin:
-                            box!.localToGlobal(Offset.zero) & box.size,
                       );
                     },
                     child: Icon(

@@ -13,23 +13,27 @@ class RemoteArticlesRepository implements ArticlesRepositoryInterface {
   final Dio _dio;
 
   @override
-  Future<List<ArticleCardModel>> getArticles({
+  Future<List<ArticleQuickInfoModel>> getArticles({
     int page = 1,
     String type = ArticleTypes.popular,
   }) async {
     final requestConfiguration = _mapArticlesTypeToRequest(page, type);
 
-    final response = await _dio.get(
-      requestConfiguration['path'] as String,
-      queryParameters:
-          requestConfiguration['queryParameters'] as Map<String, dynamic>,
-    );
+    try {
+      final response = await _dio.get(
+        requestConfiguration['path'] as String,
+        queryParameters:
+            requestConfiguration['queryParameters'] as Map<String, dynamic>,
+      );
 
-    final articles = response.data as List;
+      final articles = response.data as List;
 
-    return articles
-        .map((e) => ArticleCardModel.fromJson(e as Map<String, dynamic>))
-        .toList();
+      return articles
+          .map((e) => ArticleQuickInfoModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } on DioError {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> _mapArticlesTypeToRequest(
@@ -74,23 +78,33 @@ class RemoteArticlesRepository implements ArticlesRepositoryInterface {
 
   @override
   Future<ArticleDetailsModel> getArticleDetails({
-    required String slug,
+    required String path,
   }) async {
-    final res = await _dio.get(
-      StringUtils.joinBy(
-        [
-          ApiConstants.articles,
-          slug,
-        ],
-        separator: '/',
-      ),
+    try {
+      final articleDetails = await _loadArticleData(path);
+
+      return articleDetails;
+    } on DioError {
+      rethrow;
+    }
+  }
+
+  Future<ArticleDetailsModel> _loadArticleData(String value) async {
+    log(
+      'loading articles data for $value',
+      name: 'RemoteArticlesRepository::_loadArticleData',
+    );
+    final res = await _dio.get(ApiConstants.articles + value);
+
+    final articleDetails = ArticleDetailsModel.fromJson(
+      res.data as Map<String, dynamic>,
     );
 
-    return ArticleDetailsModel.fromJson(res.data as Map<String, dynamic>);
+    return articleDetails;
   }
 
   @override
-  Future<ArticleCardModel> getArticleCard({
+  Future<ArticleQuickInfoModel> getArticleCard({
     required String slug,
   }) async {
     final res = await _dio.get(
@@ -103,6 +117,6 @@ class RemoteArticlesRepository implements ArticlesRepositoryInterface {
       ),
     );
 
-    return ArticleCardModel.fromJson(res.data as Map<String, dynamic>);
+    return ArticleQuickInfoModel.fromJson(res.data as Map<String, dynamic>);
   }
 }
